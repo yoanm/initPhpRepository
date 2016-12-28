@@ -10,13 +10,14 @@
       "email": "yoanm@users.noreply.github.com"
     }
   ],
-  "require": {
-    "php": ">=5.5"
+  "support": {
+    "issues": "https://github.com/yoanm/XXX/issues"
   },
-  "require-dev": {
-    "phpunit/phpunit": "~4.0",
-    "squizlabs/php_codesniffer": "2.*",
-    "behat/behat": "~3.0"
+  "provide": [
+    "YYY/ZZZ"
+  ],
+  "suggest": {
+    "YYY/ZZZ": "Description"
   },
   "autoload": {
     "psr-0": {
@@ -28,6 +29,14 @@
       "Technical\\": "tests/Technical",
       "Functional\\": "tests/Functional"
     }
+  },
+  "require": {
+    "php": ">=5.5"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0",
+    "squizlabs/php_codesniffer": "2.*",
+    "behat/behat": "~3.0"
   },
   "scripts": {
     "test": [
