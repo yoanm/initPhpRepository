@@ -1,9 +1,10 @@
 {
-  "name":         "yoanm/XXX",
-  "description":  "XXX",
-  "keywords":     ["XXX"],
-  "type":         "library",
-  "authors":      [
+  "name": "yoanm/XXX",
+  "description": "XXX",
+  "keywords": ["XXX"],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
     {
       "name": "yoanm",
       "email": "yoanm@users.noreply.github.com"

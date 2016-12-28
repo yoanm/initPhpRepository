@@ -1,7 +1,7 @@
 {
-  "name":         "yoanm/XXX",
-  "type":         "project",
-  "authors":      [
+  "name": "yoanm/XXX",
+  "type": "project",
+  "authors": [
     {
       "name": "yoanm",
       "email": "yoanm@users.noreply.github.com"
