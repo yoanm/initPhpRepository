@@ -14,9 +14,9 @@
   "support": {
     "issues": "https://github.com/yoanm/XXX/issues"
   },
-  "provide": [
-    "YYY/ZZZ"
-  ],
+  "provide": {
+    "yoanm/XXX": "~0.1"
+  },
   "suggest": {
     "YYY/ZZZ": "Description"
   },
