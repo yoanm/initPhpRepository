@@ -25,7 +25,7 @@
     "psr-4": {
       "Technical\\": "tests/Technical",
       "Functional\\": "tests/Functional",
-      "Functional\\Yoanm\\XXX\\Context\\": "app_test/features/bootstrap"
+      "Functional\\Yoanm\\XXX\\Context\\": "features/bootstrap"
     }
   },
   "scripts": {
