@@ -4,7 +4,8 @@
   "authors": [
     {
       "name": "yoanm",
-      "email": "yoanm@users.noreply.github.com"
+      "email": "yoanm@users.noreply.github.com",
+      "role": "Developer"
     }
   ],
   "require": {
