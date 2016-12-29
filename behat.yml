@@ -2,5 +2,5 @@ default:
   suites:
     default:
       contexts:
-        - Functional\Yoanm\XXX\Context\ExtensionContext: ~
+        - Functional\Yoanm\XXX\Context\FeatureContext: ~
 
