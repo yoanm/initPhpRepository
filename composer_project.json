@@ -24,7 +24,8 @@
   "autoload-dev": {
     "psr-4": {
       "Technical\\": "tests/Technical",
-      "Functional\\": "tests/Functional"
+      "Functional\\": "tests/Functional",
+      "Functional\\Yoanm\\XXX\\Context\\": "app_test/features/bootstrap"
     }
   },
   "scripts": {
@@ -41,6 +42,9 @@
     ],
     "cs": [
       "./vendor/bin/phpcs"
+    ],
+    "cs-checkstyle": [
+       "./vendor/bin/phpcs --report=checkstyle"
     ],
     "coverage-clover": [
       "./vendor/bin/phpunit --coverage-clover coverage/clover.xml"
