@@ -1,0 +1,6 @@
+default:
+  suites:
+    default:
+      contexts:
+        - Functional\Yoanm\XXX\Context\ExtensionContext: ~
+
