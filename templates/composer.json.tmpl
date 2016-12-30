@@ -1,25 +1,16 @@
 {
   "name": "%composer.package.name%",
-  "description": "XXX",
-  "keywords": ["XXX"],
-  "type": "library",
-  "license": "MIT",
-  "version": "0.1.0",
+  "type": "%composer.config.type%",%composer.config.extra.version%
+  "license": "MIT",%composer.config.extra.description%%composer.config.extra.keyword%
   "authors": [
     {
       "name": "yoanm",
       "email": "yoanm@users.noreply.github.com",
       "role": "Developer"
     }
-  ],
+  ],%composer.config.extra.provide%%composer.config.extra.suggest%
   "support": {
     "issues": "https://%git.repository.url%/issues"
-  },
-  "provide": {
-    "yoanm/XXX": "~0.1"
-  },
-  "suggest": {
-    "YYY/ZZZ": "Description"
   },
   "autoload": {
     "psr-0": {

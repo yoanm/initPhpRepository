@@ -1,6 +1,7 @@
 <?php
 namespace Yoanm\DefaultPhpRepository\Processor;
 
+use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Filesystem\Filesystem;
 use Yoanm\DefaultPhpRepository\Helper\PathHelper;
@@ -10,22 +11,48 @@ use Yoanm\DefaultPhpRepository\Helper\PathHelper;
  */
 class TemplateProcessor
 {
-    /** @var ParameterBag */
-    private $variableBag;
+    /** @var array */
+    private $variableList = [];
+    /** @var string[] */
+    private $variableNameList = [];
+    /** @var string */
+    private $filenameResolverRegexp;
     /** @var Filesystem */
     private $fs;
 
     /**
-     * @param ParameterBag $variableBag
+     * @param array $variableList
+     * @param array $extraTemplatePath
      */
-    public function __construct(ParameterBag $variableBag)
+    public function __construct(array $variableList, array $extraTemplatePath = [])
     {
-        $this->variableBag = $variableBag;
+        $this->variableList = $variableList;
+        foreach($this->variableList as $variableId => $variableValue) {
+            $variableId = sprintf('%%%s%%', $variableId);
+            $this->variableNameList[$variableId] = $variableId;
+        }
+
+        foreach ($extraTemplatePath as $extraKey => $extraValue) {
+            $variableId = sprintf('%%%s%%', $extraKey);
+            $this->variableNameList[$variableId] = $variableId;
+            $this->variableList[$variableId] = $this->loadTemplate($extraValue);
+        }
+
         $this->fs = new Filesystem();
+
+        // compile this regexp at startup (no need to to it each time)
+        $this->filenameResolverRegexp = sprintf(
+            '#%s?(?:[^%s]+%s)*([^%s]+)\.tmpl$#',
+            PathHelper::separator(),
+            PathHelper::separator(),
+            PathHelper::separator(),
+            PathHelper::separator()
+        );
     }
 
     /**
-     * @param string $mode
+     * @param string $templatePath
+     * @param string $outputDir
      *
      * @return ParameterBag
      */
@@ -46,36 +73,16 @@ class TemplateProcessor
      */
     protected function resolveOutputFilename($templatePath)
     {
-        $filename = preg_replace(
-            sprintf(
-                '#%s?(?:[^%s]+%s)*([^%s]+)\.tmpl$#',
-                PathHelper::separator(),
-                PathHelper::separator(),
-                PathHelper::separator(),
-                PathHelper::separator()
-            ),
-            '\1',
-            $templatePath
-        );
-
-        return $filename;
+        return preg_replace($this->filenameResolverRegexp, '\1', $templatePath);
     }
 
+    /**
+     * @param string $templatePath
+     *
+     * @return string file content
+     */
     protected function loadTemplate($templatePath)
     {
-        $variableList = $this->variableBag->all();
-
-        $template = str_replace(
-            array_map(
-                function ($value) {
-                    return sprintf('%%%s%%', $value);
-                },
-                array_keys($variableList)
-            ),
-            $variableList,
-            file_get_contents($templatePath)
-        );
-
-        return $template;
+        return str_replace($this->variableNameList, $this->variableList, file_get_contents($templatePath));
     }
 }

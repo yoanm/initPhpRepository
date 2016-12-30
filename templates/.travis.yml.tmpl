@@ -5,19 +5,13 @@ php:
   - '5.6'
   - '7.0'
 
-env:
-  - SYMFONY_VERSION=2.7.*
-  - SYMFONY_VERSION=2.8.*
-  - SYMFONY_VERSION=3.*
-
-sudo: false
+sudo: false%travis.config.extra.env%
 
 matrix:
   fast_finish: true
 
 install:
-  - composer build-ci
-  - composer require "symfony/symfony:${SYMFONY_VERSION}"
+  - composer build-ci%travis.config.extra.install%
 
 script:
   - composer run-script test

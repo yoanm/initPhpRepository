@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Yoanm\DefaultPhpRepository\Factory\TemplatePathListFactory;
+use Yoanm\DefaultPhpRepository\Factory\TemplatePathBagFactory;
 use Yoanm\DefaultPhpRepository\Factory\VariableBagFactory;
 use Yoanm\DefaultPhpRepository\Processor\TemplateProcessor;
 
@@ -41,14 +41,24 @@ class InitCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $mode = $input->getArgument('type');
-        
-        $variableBag = (new VariableBagFactory())->load();
-        $templatePathList = (new TemplatePathListFactory())->load($mode);
-
-        $processor = new TemplateProcessor($variableBag);
-
         $outputLevelSpace = '    ';
+
+        $mode = $input->getArgument('type');
+
+        if (!in_array($mode, [Mode::PHP_LIBRARY, Mode::SYMFONY_LIBRARY, Mode::PROJECT])) {
+            $output->writeln(sprintf('<error>Unexpected mode "%s" !</error>', $mode));
+            $output->writeln('<info>Allowed mode :</info>');
+            $output->writeln(sprintf('%s<comment>%s</comment>', $outputLevelSpace, Mode::PHP_LIBRARY));
+            $output->writeln(sprintf('%s<comment>%s</comment>', $outputLevelSpace, Mode::SYMFONY_LIBRARY));
+            $output->writeln(sprintf('%s<comment>%s</comment>', $outputLevelSpace, Mode::PROJECT));
+
+            return 1;
+        }
+
+        $variableBag = (new VariableBagFactory())->load($mode);
+        $templatePathList = (new TemplatePathBagFactory())->load($mode);
+
+        $processor = new TemplateProcessor($variableBag->all());
 
         $output->writeln(sprintf('<comment>Creating default file for : </comment><info>%s</info>', ucwords($mode)));
         try {
@@ -90,11 +100,14 @@ class InitCommand extends Command
                     ));
                 } else {
                     $processor->process($templatePath);
+
                     $output->writeln('<info>Done</info>');
                 }
             }
+            return 0;
         } catch (\Exception $e) {
             $output->writeln(sprintf('<error>Error -></error>%s', $e->getMessage()));
+            return 2;
         }
     }
 }
