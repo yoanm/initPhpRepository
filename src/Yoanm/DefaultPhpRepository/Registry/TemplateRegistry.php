@@ -121,6 +121,8 @@ class TemplateRegistry
             PathHelper::implodePathComponentList($subPathList),
             $templateName
         );
+        //var_dump([$filename, realpath($filename)]);
+        $filename = realpath($filename);
 
         if (!file_exists($filename)) {
             throw new \Exception(sprintf('template "%s" not found !'));
