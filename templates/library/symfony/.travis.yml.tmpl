@@ -16,6 +16,7 @@ matrix:
   fast_finish: true
 
 install:
+  - composer build-ci
   - composer require "symfony/symfony:${SYMFONY_VERSION}"
 
 script:

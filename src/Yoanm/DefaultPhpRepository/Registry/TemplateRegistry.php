@@ -23,7 +23,6 @@ class TemplateRegistry
             'README.md' => true,
             '.gitignore' => true,
             'composer.json' => true,
-            '.scrutinizer.yml' => true,
             '.travis.yml' => true,
         ];
 
@@ -31,7 +30,6 @@ class TemplateRegistry
             static $libraryOrTemplateTemplateList = [
                 '.gitignore' => true,
                 'composer.json' => true,
-                '.scrutinizer.yml' => true,
                 '.travis.yml' => true,
             ];
 
