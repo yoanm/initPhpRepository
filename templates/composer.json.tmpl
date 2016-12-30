@@ -1,28 +1,28 @@
 {
-  "name": "%composer.package.name%",
-  "type": "%composer.config.type%",%composer.config.extra.version%
-  "license": "MIT",%composer.config.extra.description%%composer.config.extra.keyword%
+  "name": "yoanm/default-php-repository",
+  "type": "project",
+  "license": "MIT",
   "authors": [
     {
       "name": "yoanm",
       "email": "yoanm@users.noreply.github.com",
       "role": "Developer"
     }
-  ],%composer.config.extra.provide%%composer.config.extra.suggest%
+  ],
   "support": {
-    "issues": "https://%git.repository.url%/issues"
+    "issues": "https://github.com/yoanm/defaultPhpRepository/issues"
   },
   "autoload": {
     "psr-0": {
-      "%autoload.namespace.psr_0%": "src/"
+      "Yoanm\\DefaultPhpRepository": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Technical\\Integration\\%autoload.namespace.psr_0%\\": "tests/Technical/Integration",
-      "Technical\\Unit\\%autoload.namespace.psr_0%\\": "tests/Technical/Unit",
-      "Functional\\%autoload.namespace.psr_0%\\": "tests/Functional",
-      "Functional\\%autoload.namespace.psr_0%\\BehatContext\\": "features/bootstrap"
+      "Technical\\Integration\\Yoanm\\DefaultPhpRepository\\": "tests/Technical/Integration",
+      "Technical\\Unit\\Yoanm\\DefaultPhpRepository\\": "tests/Technical/Unit",
+      "Functional\\Yoanm\\DefaultPhpRepository\\": "tests/Functional",
+      "Functional\\Yoanm\\DefaultPhpRepository\\BehatContext\\": "features/bootstrap"
     }
   },
   "require": {

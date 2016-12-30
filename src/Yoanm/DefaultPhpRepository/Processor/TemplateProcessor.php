@@ -1,88 +1,40 @@
 <?php
 namespace Yoanm\DefaultPhpRepository\Processor;
 
-use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\Filesystem\Filesystem;
-use Yoanm\DefaultPhpRepository\Helper\PathHelper;
+use Yoanm\DefaultPhpRepository\Exception\TargetFileExistsException;
+use Yoanm\DefaultPhpRepository\Helper\TemplateHelper;
 
 /**
  * Class TemplateProcessor
  */
 class TemplateProcessor
 {
-    /** @var array */
-    private $variableList = [];
-    /** @var string[] */
-    private $variableNameList = [];
-    /** @var string */
-    private $filenameResolverRegexp;
-    /** @var Filesystem */
-    private $fs;
+    /** @var TemplateFileProcessor */
+    private $templateFileProcessor;
+    /** @var TemplateFolderProcessor */
+    private $templateFolderProcessor;
 
     /**
-     * @param array $variableList
-     * @param array $extraTemplatePath
+     * @param TemplateHelper $templateHelper
      */
-    public function __construct(array $variableList, array $extraTemplatePath = [])
-    {
-        $this->variableList = $variableList;
-        foreach($this->variableList as $variableId => $variableValue) {
-            $variableId = sprintf('%%%s%%', $variableId);
-            $this->variableNameList[$variableId] = $variableId;
-        }
+    public function __construct(TemplateHelper $templateHelper) {
+        $this->templateFileProcessor = new TemplateFileProcessor($templateHelper);
+        $this->templateFolderProcessor = new TemplateFolderProcessor($templateHelper);
 
-        foreach ($extraTemplatePath as $extraKey => $extraValue) {
-            $variableId = sprintf('%%%s%%', $extraKey);
-            $this->variableNameList[$variableId] = $variableId;
-            $this->variableList[$variableId] = $this->loadTemplate($extraValue);
-        }
-
-        $this->fs = new Filesystem();
-
-        // compile this regexp at startup (no need to to it each time)
-        $this->filenameResolverRegexp = sprintf(
-            '#%s?(?:[^%s]+%s)*([^%s]+)\.tmpl$#',
-            PathHelper::separator(),
-            PathHelper::separator(),
-            PathHelper::separator(),
-            PathHelper::separator()
-        );
     }
 
     /**
      * @param string $templatePath
      * @param string $outputDir
      *
-     * @return ParameterBag
+     * @throws TargetFileExistsException
      */
     public function process($templatePath, $outputDir = '.')
     {
-        $filename = sprintf(
-            '%s%s',
-            PathHelper::appendPathSeparator($outputDir),
-            $this->resolveOutputFilename($templatePath)
-        );
-        $this->fs->dumpFile($filename, $this->loadTemplate($templatePath));
-    }
-
-    /**
-     * @param string $templatePath
-     *
-     * @return string
-     */
-    protected function resolveOutputFilename($templatePath)
-    {
-        return preg_replace($this->filenameResolverRegexp, '\1', $templatePath);
-    }
-
-    /**
-     * @param string $templatePath
-     *
-     * @return string file content
-     */
-    protected function loadTemplate($templatePath)
-    {
-        return str_replace($this->variableNameList, $this->variableList, file_get_contents($templatePath));
+        if (is_dir($templatePath)) {
+            $this->templateFolderProcessor->process($templatePath, $outputDir);
+        } else {
+            $this->templateFileProcessor->process($templatePath, $outputDir);
+        }
     }
 }

@@ -28,9 +28,10 @@ class PathHelper
      */
     public static function appendPathSeparator($component)
     {
-        if (strrpos(self::separator(), $component) === (strlen($component) - 1)) {
+        if (strrpos($component, self::separator()) === (strlen($component) - 1)) {
             return $component;
         }
+
         return sprintf(
             '%s%s',
             $component,

@@ -1,8 +1,6 @@
 <?php
 namespace Yoanm\DefaultPhpRepository\Factory;
 
-use phpDocumentor\Reflection\DocBlock\Tags\Param;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Yoanm\DefaultPhpRepository\Command\Mode;
 use Yoanm\DefaultPhpRepository\Registry\TemplateRegistry;
 
@@ -21,7 +19,7 @@ class TemplatePathBagFactory
 
     /**
      * @param $mode
-     * 
+     *
      * @return array
      */
     public function load($mode)
@@ -38,23 +36,25 @@ class TemplatePathBagFactory
     {
         $list = [
             // Init
-            'template.init.readme' => $this->templateRegistry->getTemplatePath('README.md'),
-            'template.init.license' => $this->templateRegistry->getTemplatePath('LICENSE'),
-            'template.init.contributing' => $this->templateRegistry->getTemplatePath('CONTRIBUTING.md'),
+            'template.init.readme' => $this->templateRegistry->getTemplatePath('README.md.tmpl'),
+            'template.init.license' => $this->templateRegistry->getTemplatePath('LICENSE.tmpl'),
+            'template.init.contributing' => $this->templateRegistry->getTemplatePath('CONTRIBUTING.md.tmpl'),
             // Git
-            'template.git.gitignore' => $this->templateRegistry->getTemplatePath('.gitignore'),
+            'template.git.gitignore' => $this->templateRegistry->getTemplatePath('.gitignore.tmpl'),
             // Composer
-            'template.composer.config' => $this->templateRegistry->getTemplatePath('composer.json'),
+            'template.composer.config' => $this->templateRegistry->getTemplatePath('composer.json.tmpl'),
             // Tests
-            'template.test.phpcs' => $this->templateRegistry->getTemplatePath('phpcs.xml.dist'),
-            'template.test.phpunit' => $this->templateRegistry->getTemplatePath('phpunit.xml.dist'),
-            'template.test.behat' => $this->templateRegistry->getTemplatePath('behat.yml'),
+            'template.test.phpcs.config' => $this->templateRegistry->getTemplatePath('phpcs.xml.dist.tmpl'),
+            'template.test.phpunit.config' => $this->templateRegistry->getTemplatePath('phpunit.xml.dist.tmpl'),
+            'template.test.phpunit.folder' => $this->templateRegistry->getTemplatePath('tests'),
+            'template.test.behat.config' => $this->templateRegistry->getTemplatePath('behat.yml.tmpl'),
+            'template.test.behat.folder' => $this->templateRegistry->getTemplatePath('features'),
             // Continuous integration
-            'template.ci.scrutinizer' => $this->templateRegistry->getTemplatePath('.scrutinizer.yml'),
+            'template.ci.scrutinizer' => $this->templateRegistry->getTemplatePath('.scrutinizer.yml.tmpl'),
         ];
 
         if (Mode::PROJECT !== $mode) {
-            $list['template.ci.travis'] = $this->templateRegistry->getTemplatePath('.travis.yml');
+            $list['template.ci.travis'] = $this->templateRegistry->getTemplatePath('.travis.yml.tmpl');
         }
 
         return $list;

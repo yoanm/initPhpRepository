@@ -1,7 +1,6 @@
 <?php
 namespace Yoanm\DefaultPhpRepository\Registry;
 
-use Yoanm\DefaultPhpRepository\Command\Mode;
 use Yoanm\DefaultPhpRepository\Helper\PathHelper;
 
 /**
@@ -9,19 +8,7 @@ use Yoanm\DefaultPhpRepository\Helper\PathHelper;
  */
 class TemplateRegistry
 {
-    private $rootTemplatePath;
-
-    public function __construct()
-    {
-        $this->rootTemplatePath = PathHelper::appendPathSeparator(
-            sprintf(
-                '%s%s%s',
-                PathHelper::appendPathSeparator(__DIR__),
-                PathHelper::implodePathComponentList(array_fill(0, 4, '..')), // Go 4 level up
-                'templates'
-            )
-        );
-    }
+    private static $rootTemplateDir = null;
 
     /**
      * @param string $templateName
@@ -34,8 +21,8 @@ class TemplateRegistry
     {
         $filename = sprintf(
             '%s%s',
-            $this->rootTemplatePath,
-            sprintf('%s.tmpl', $templateName)
+            self::getRootTemplateDir(),
+            $templateName
         );
 
         if (!file_exists($filename)) {
@@ -43,5 +30,22 @@ class TemplateRegistry
         }
 
         return realpath($filename);
+    }
+
+    public static function getRootTemplateDir()
+    {
+        if (null === self::$rootTemplateDir) {
+            self::$rootTemplateDir = PathHelper::appendPathSeparator(
+                realpath(
+                    sprintf(
+                        '%s%s%s',
+                        PathHelper::appendPathSeparator(__DIR__),
+                        PathHelper::implodePathComponentList(array_fill(0, 4, '..')), // Go 4 level up
+                        'templates'
+                    )
+                )
+            );
+        }
+        return self::$rootTemplateDir;
     }
 }

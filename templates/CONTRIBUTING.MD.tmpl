@@ -3,18 +3,19 @@
 ## Getting Started
  * Fork, then clone the repo:
 ```bash
-git clone git@github.com:your-username/%git.repository.url_id_without_vendor%.git
+git clone git@github.com:your-username/defaultPhpRepository.git
 ````
 
- * Make sure the tests pass:
+ * Make sure everything goes well:
 ```bash
 composer ci
 ```
 
  * Make your changes (Add/Update tests according to your changes).
- * Make the tests pass:
+ * Make tests are still green:
 ```bash
-composer ci
+composer run cs
+composer run test
 ```
 
  * To check code coverage, launch
@@ -22,7 +23,7 @@ composer ci
 composer coverage
 ```
 
- * Push to your fork and [submit a pull request](https://%git.repository.url%/compare/).
+ * Push to your fork and [submit a pull request](https://github.com/yoanm/defaultPhpRepository/compare/).
  * Wait for feedback or merge.
 
   Some stuff that will increase your pull request's acceptance:

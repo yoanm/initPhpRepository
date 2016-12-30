@@ -6,9 +6,10 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Yoanm\DefaultPhpRepository\Command\Helper\CommandTemplateHelper;
+use Yoanm\DefaultPhpRepository\Command\Processor\CommandTemplateProcessor;
 use Yoanm\DefaultPhpRepository\Factory\TemplatePathBagFactory;
 use Yoanm\DefaultPhpRepository\Factory\VariableBagFactory;
-use Yoanm\DefaultPhpRepository\Processor\TemplateProcessor;
 
 class InitCommand extends Command
 {
@@ -33,6 +34,8 @@ class InitCommand extends Command
             )
             ->addOption('list', 'l', InputOption::VALUE_NONE, 'List template file instead of creation them')
             ->addOption('id', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'process only given ids')
+            ->addOption('ask-before-override', 'a', InputOption::VALUE_NONE, 'Will ask before overriding an existing file')
+            ->addOption('force-override', 'f', InputOption::VALUE_NONE, 'Override existing files by default')
         ;
     }
 
@@ -58,9 +61,28 @@ class InitCommand extends Command
         $variableBag = (new VariableBagFactory())->load($mode);
         $templatePathList = (new TemplatePathBagFactory())->load($mode);
 
-        $processor = new TemplateProcessor($variableBag->all());
+        $skipExistingFile = false === $input->getOption('ask-before-override');
+        $forceOverride = $input->getOption('force-override');
+        if (true === $forceOverride) {
+            $skipExistingFile = false;
+        }
 
-        $output->writeln(sprintf('<comment>Creating default file for : </comment><info>%s</info>', ucwords($mode)));
+        $commandTemplateHelper = new CommandTemplateHelper(
+            $this->getHelper('question'),
+            $input,
+            $output,
+            $variableBag->all(),
+            $skipExistingFile,
+            $forceOverride
+        );
+        $commandProcessor = new CommandTemplateProcessor($commandTemplateHelper);
+
+        $output->writeln(sprintf('<comment>Creating default files for : </comment><info>%s</info>', ucwords($mode)));
+        if (true === $forceOverride) {
+            $output->writeln('<fg=red>WARNING :  Existing files will be overriden by default</fg=red>');
+        } elseif (true === $skipExistingFile) {
+            $output->writeln('<comment>INFO : Existing files will be skipped !</comment>');
+        }
         try {
             $currentType = null;
             foreach ($templatePathList as $templateKey => $templatePath) {
@@ -78,36 +100,33 @@ class InitCommand extends Command
                     } elseif ('Ci' === $header) {
                         $header = 'Continuous integration';
                     }
-                    $output->writeln(sprintf('%s%s', $outputLevelSpace, $header));
+                    $output->writeln(sprintf('<info>%s%s</info>', $outputLevelSpace, $header));
                 }
 
-                $output->write(sprintf(
-                    '%s%s : ',
+                $output->writeln(sprintf(
+                    '%s* %s : ',
                     str_repeat($outputLevelSpace, 2),
                     ucwords(str_replace('template.', '', str_replace($currentType.'.', '', $templateKey)))
                 ));
                 if (true === $input->getOption('list')) {
-                    $output->writeln('');
                     $output->writeln(sprintf(
-                        '%s<comment>Id</comment> <info>%s</info>',
+                        '%s<comment>Id   : </comment><info>%s</info>',
                         str_repeat($outputLevelSpace, 3),
                         $templateKey
                     ));
                     $output->writeln(sprintf(
-                        '%s<comment>File</comment> <info>%s</info>',
+                        '%s<comment>File : </comment><info>%s</info>',
                         str_repeat($outputLevelSpace, 3),
                         $templatePath
                     ));
                 } else {
-                    $processor->process($templatePath);
-
-                    $output->writeln('<info>Done</info>');
+                    $commandProcessor->process($templatePath);
                 }
             }
             return 0;
         } catch (\Exception $e) {
-            $output->writeln(sprintf('<error>Error -></error>%s', $e->getMessage()));
-            return 2;
+            $output->writeln(sprintf('<error>Error -> %s</error>', $e->getMessage()));
+            throw $e;
         }
     }
 }
