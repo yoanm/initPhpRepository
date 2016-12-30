@@ -35,11 +35,11 @@
   },
   "scripts": {
     "build": [
-      "@composer install --prefer-dist --optimize-autoloader --ansi --verbose --no-suggest --no-interaction"
+      "@composer install --prefer-dist --optimize-autoloader --ansi --no-suggest --no-interaction"
     ],
     "build-ci": [
       "mkdir -p build/coverage",
-      "@composer install --prefer-dist --ansi --verbose --no-suggest --no-interaction"
+      "@composer install --prefer-dist --ansi --no-suggest --no-interaction"
     ],
     "ci": [
       "@ci-build",
