@@ -8,7 +8,7 @@
 ```bash
 git clone git@github.com:yoanm/defaultPhpRepository.git
 cd defaultPhpRepository
-composer run build
+composer build
 ```
 
 ## Contributing
