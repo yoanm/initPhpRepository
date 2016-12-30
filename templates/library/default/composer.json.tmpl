@@ -1,0 +1,79 @@
+{
+  "name": "%COMPOSER_PACKAGE_NAME%",
+  "description": "XXX",
+  "keywords": ["XXX"],
+  "type": "library",
+  "license": "MIT",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "yoanm",
+      "email": "yoanm@users.noreply.github.com",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://%GITHUB_REPOSITORY_URL%/issues"
+  },
+  "provide": {
+    "yoanm/XXX": "~0.1"
+  },
+  "suggest": {
+    "YYY/ZZZ": "Description"
+  },
+  "autoload": {
+    "psr-0": {
+      "%PSR_0_NAMESPACE%": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Technical\\Integration\\%PSR_0_NAMESPACE%\\": "tests/Technical/Integration",
+      "Technical\\Unit\\%PSR_0_NAMESPACE%\\": "tests/Technical/Unit",
+      "Functional\\%PSR_0_NAMESPACE%\\": "tests/Functional",
+      "Functional\\%PSR_0_NAMESPACE%\\BehatContext\\": "features/bootstrap"
+    }
+  },
+  "require": {
+    "php": ">=5.5"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0",
+    "squizlabs/php_codesniffer": "2.*",
+    "behat/behat": "~3.0"
+  },
+  "scripts": {
+    "build": [
+      "@composer install --prefer-dist --optimize-autoloader --ansi --verbose --no-suggest --no-interaction"
+    ],
+    "ci-build": [
+      "mkdir -p build/coverage",
+      "@composer install --prefer-dist --ansi --verbose --no-suggest --no-interaction"
+    ],
+    "ci": [
+      "@ci-build",
+      "@cs",
+      "@test"
+    ],
+    "test": [
+      "@t-test",
+      "@f-test"
+    ],
+    "f-test": [
+      "./vendor/bin/phpunit --testsuite functional",
+      "./vendor/bin/behat --no-snippets --strict --colors --format progress"
+    ],
+    "t-test": [
+      "./vendor/bin/phpunit --testsuite technical"
+    ],
+    "cs": [
+      "./vendor/bin/phpcs"
+    ],
+    "coverage": [
+      "./vendor/bin/phpunit --coverage-html coverage"
+    ],
+    "coverage-clover": [
+      "./vendor/bin/phpunit --coverage-clover build/coverage/clover.xml"
+    ]
+  }
+}
