@@ -6,15 +6,16 @@
 git clone git@github.com:your-username/defaultPhpRepository.git
 ````
 
- * Make sure the tests pass:
+ * Make sure everything goes well:
 ```bash
 composer ci
 ```
 
  * Make your changes (Add/Update tests according to your changes).
- * Make the tests pass:
+ * Make tests are still green:
 ```bash
-composer ci
+composer run cs
+composer run test
 ```
 
  * To check code coverage, launch
