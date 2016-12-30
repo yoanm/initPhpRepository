@@ -2,20 +2,22 @@
 
 # How to
 
-## Initialize php library
+## Initiliaze
+
+### Library
+Go to library repository folder an type : 
 ```bash
-cd LIBRARY_PATH
-DEFAULT_PHP_REPOSITORY_PATH/bin/init-php-repository library
+DEFAULT_PHP_REPOSITORY_PATH/bin/defaultPhpRepository init
 ```
 
-## Initialize symfony library
+#### Symfony
+In case the library is used in symfony invironment, type the following : 
 ```bash
-cd LIBRARY_PATH
-DEFAULT_PHP_REPOSITORY_PATH/bin/init-php-repository symfony-library
+DEFAULT_PHP_REPOSITORY_PATH/bin/defaultPhpRepository init symfony-library
 ```
 
-## Initialize project
+### Project
+Go to project repository folder an type : 
 ```bash
-cd LIBRARY_PATH
-DEFAULT_PHP_REPOSITORY_PATH/bin/init-php-repository project
+DEFAULT_PHP_REPOSITORY_PATH/bin/defaultPhpRepository init project
 ```
