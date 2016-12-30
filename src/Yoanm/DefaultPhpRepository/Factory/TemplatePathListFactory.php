@@ -15,12 +15,13 @@ class TemplatePathListFactory
      *
      * @return ParameterBag
      */
-    public function load($mode = Mode::PHP_LIBRARY)
+    public function load($mode)
     {
         $templateRegistry = new TemplateRegistry();
 
         $list = [
             // Init
+            'template.init.readme' => $templateRegistry->getTemplatePathFor('README.md', $mode),
             'template.init.license' => $templateRegistry->getTemplatePathFor('LICENSE', $mode),
             'template.init.contributing' => $templateRegistry->getTemplatePathFor('CONTRIBUTING.md', $mode),
             // Git

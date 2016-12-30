@@ -37,6 +37,8 @@ class VariableBagFactory
         }
 
         $bag->set('git.repository.url_id', $githubRepositoryUrlId);
+        $tmp = explode('/', $githubRepositoryUrlId);
+        $bag->set('git.repository.url_id_without_vendor', array_pop($tmp));
         $bag->set('git.repository.url', sprintf('github.com%s%s', PathHelper::separator(), $githubRepositoryUrlId));
 
         // - Composer variables
@@ -45,7 +47,15 @@ class VariableBagFactory
         $bag->set('composer.package.name', $composerPackageName);
 
         // - Autoloading variables
-        $autoloadNamespace = str_replace('/', '\\', ContainerBuilder::camelize($githubRepositoryUrlId));
+        $autoloadNamespace = implode(
+            '\\',
+            array_map(
+                function ($part) {
+                    return ContainerBuilder::camelize($part);
+                },
+                explode('/', $githubRepositoryUrlId)
+            )
+        );
         $autoloadPsr0Namespace = str_replace('\\', '\\\\', $autoloadNamespace);
 
         $bag->set('git.username', $gitUsername);
@@ -63,6 +73,8 @@ class VariableBagFactory
                 $id
             )
         ));
+
+        $bag->set('current.year', date('Y'));
 
         $bag->resolve();
 

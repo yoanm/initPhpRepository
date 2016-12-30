@@ -1,5 +1,5 @@
 {
-  "name": "%COMPOSER_PACKAGE_NAME%",
+  "name": "%composer.package.name%",
   "description": "XXX",
   "keywords": ["XXX"],
   "type": "library",
@@ -13,7 +13,7 @@
     }
   ],
   "support": {
-    "issues": "https://%GITHUB_REPOSITORY_URL%/issues"
+    "issues": "https://%git.repository.url%/issues"
   },
   "provide": {
     "yoanm/XXX": "~0.1"
@@ -23,15 +23,15 @@
   },
   "autoload": {
     "psr-0": {
-      "%PSR_0_NAMESPACE%": "src/"
+      "%autoload.namespace.psr_0%": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Technical\\Integration\\%PSR_0_NAMESPACE%\\": "tests/Technical/Integration",
-      "Technical\\Unit\\%PSR_0_NAMESPACE%\\": "tests/Technical/Unit",
-      "Functional\\%PSR_0_NAMESPACE%\\": "tests/Functional",
-      "Functional\\%PSR_0_NAMESPACE%\\BehatContext\\": "features/bootstrap"
+      "Technical\\Integration\\%autoload.namespace.psr_0%\\": "tests/Technical/Integration",
+      "Technical\\Unit\\%autoload.namespace.psr_0%\\": "tests/Technical/Unit",
+      "Functional\\%autoload.namespace.psr_0%\\": "tests/Functional",
+      "Functional\\%autoload.namespace.psr_0%\\BehatContext\\": "features/bootstrap"
     }
   },
   "require": {
