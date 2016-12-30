@@ -33,7 +33,7 @@ class TemplateRegistry
                 '.travis.yml' => true,
             ];
 
-            if ('README.md' === $templateName) {
+            if ('README.md' === $templateName || '.travis.yml' == $templateName) {
                 switch ($mode) {
                     case Mode::PHP_LIBRARY:
                         $path = $this->getPathForDefaultLibraryTemplate($templateName);
