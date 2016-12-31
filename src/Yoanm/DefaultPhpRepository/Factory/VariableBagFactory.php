@@ -118,14 +118,14 @@ class VariableBagFactory
         if (Mode::PROJECT !== $mode) {
             $extraList['readme.extra.badges'] = <<<EOS
 
-
 [![Travis Build Status](https://img.shields.io/travis/%git.repository.url_id%/master.svg?label=travis)](https://travis-ci.org/%git.repository.url_id%) [![PHP Versions](https://img.shields.io/badge/php-5.5%%20%%2F%%205.6%%20%%2F%%207.0-8892BF.svg)](https://php.net/)%readme.extra.badges.travis%
+
 EOS;
 
             // Git ignore - only project need a composer.lock
             $extraList['gitignore.extra'] = <<<EOS
-composer.lock
 
+composer.lock
 EOS;
             // Composer
             $extraList['composer.config.extra.description'] = <<<EOS
@@ -167,15 +167,15 @@ EOS;
             // Travis
             $extraList['travis.config.extra.env'] = <<<EOS
 
-
 env:
   - SYMFONY_VERSION=2.7.*
   - SYMFONY_VERSION=2.8.*
   - SYMFONY_VERSION=3.*
+
 EOS;
             $extraList['travis.config.extra.install'] = <<<EOS
-
   - composer require "symfony/symfony:\${SYMFONY_VERSION}"
+
 EOS;
             // Readme - extra travis badges
             $extraList['readme.extra.badges.travis'] = <<<EOS

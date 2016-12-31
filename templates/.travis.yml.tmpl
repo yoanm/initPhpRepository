@@ -11,8 +11,8 @@ matrix:
   fast_finish: true
 
 install:
-  - composer build-ci%travis.config.extra.install%
-
+  - composer build-ci
+%travis.config.extra.install%
 script:
   - composer run-script test
 

@@ -1,9 +1,6 @@
 <?php
 namespace Yoanm\DefaultPhpRepository\Helper;
 
-use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Yoanm\DefaultPhpRepository\Exception\TargetFileExistsException;
 
@@ -104,17 +101,5 @@ class TemplateHelper
     public function loadTemplate($templateFilePath)
     {
         return str_replace($this->variableNameList, $this->variableList, file_get_contents($templateFilePath));
-    }
-
-    /**@return bool
-     */
-    protected function doOverwrite()
-    {
-        $question = new ConfirmationQuestion(
-            '<question>Overwrite ? [n]</question>',
-            false
-        );
-
-        return $this->questionHelper->ask($this->input, $this->output, $question);
     }
 }
