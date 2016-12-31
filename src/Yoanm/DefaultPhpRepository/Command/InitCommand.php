@@ -96,7 +96,6 @@ class InitCommand extends Command
         try {
             $currentType = null;
             foreach ($templatePathList as $templateKey => $templatePath) {
-
                 if (count($input->getOption('id')) && !in_array($templateKey, $input->getOption('id'))) {
                     continue;
                 }
