@@ -11,7 +11,6 @@ use Yoanm\DefaultPhpRepository\Helper\TemplateHelper;
 
 /**
  * Class CommandTemplateHelper
- * @package Yoanm\DefaultPhpRepository\Helper
  */
 class CommandTemplateHelper extends TemplateHelper
 {

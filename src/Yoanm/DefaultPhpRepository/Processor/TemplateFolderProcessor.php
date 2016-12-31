@@ -7,7 +7,6 @@ use Yoanm\DefaultPhpRepository\Registry\TemplateRegistry;
 
 /**
  * Class TemplateFolderProcessor
- * @package Yoanm\DefaultPhpRepository\Processor
  */
 class TemplateFolderProcessor extends TemplateFileProcessor
 {
@@ -50,8 +49,7 @@ class TemplateFolderProcessor extends TemplateFileProcessor
         $templateFilename,
         $templateFilePath,
         $templateOutputRootDir
-    )
-    {
+    ) {
         $resolved = sprintf(
             '%s%s',
             PathHelper::appendPathSeparator($templateOutputRootDir),

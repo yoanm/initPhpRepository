@@ -6,7 +6,6 @@ use Yoanm\DefaultPhpRepository\Processor\TemplateProcessor;
 
 /**
  * Class CommandTemplateProcessor
- * @package Yoanm\DefaultPhpRepository\Processor
  */
 class CommandTemplateProcessor extends TemplateProcessor
 {
@@ -15,6 +14,5 @@ class CommandTemplateProcessor extends TemplateProcessor
      */
     public function __construct(CommandTemplateHelper $commandTemplateHelper) {
         parent::__construct($commandTemplateHelper);
-
     }
 }

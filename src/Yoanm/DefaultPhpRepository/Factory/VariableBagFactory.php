@@ -23,7 +23,6 @@ class VariableBagFactory
         $this->setGlobalVar($bag, $mode);
         $this->setExtraVar($bag, $mode);
 
-
         $bag->resolve();
 
         return $bag;
@@ -121,7 +120,6 @@ class VariableBagFactory
 [![Travis Build Status](https://img.shields.io/travis/%git.repository.url_id%/master.svg?label=travis)](https://travis-ci.org/%git.repository.url_id%) [![PHP Versions](https://img.shields.io/badge/php-5.5%%20%%2F%%205.6%%20%%2F%%207.0-8892BF.svg)](https://php.net/)%readme.extra.badges.travis%
 
 EOS;
-
             // Git ignore - only project need a composer.lock
             $extraList['gitignore.extra'] = <<<EOS
 
@@ -136,12 +134,10 @@ EOS;
 
   "keywords": ["XXX"],
 EOS;
-
             $extraList['composer.config.extra.version'] = <<<EOS
 
   "version": "0.1.0",
 EOS;
-
             $extraList['composer.config.extra.provide'] = <<<EOS
 
   "provide": {
