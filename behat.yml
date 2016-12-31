@@ -3,4 +3,3 @@ default:
     default:
       contexts:
         - Functional\Yoanm\DefaultPhpRepository\BehatContext\FeatureContext: ~
-
