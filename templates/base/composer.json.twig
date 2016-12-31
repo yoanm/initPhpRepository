@@ -1,7 +1,11 @@
+{% set escapedNamespace = autoload.namespace|replace({'\\':'\\\\'}) %}
 {
-  "name": "yoanm/default-php-repository",
-  "type": "project",
+  "name": "{{ composer.package.name }}",
+  "type": "{{ composer.config.type }}",
   "license": "MIT",
+{% block version %}{% endblock version %}
+{% block description %}{% endblock description %}
+{% block keyword %}{% endblock keyword %}
   "authors": [
     {
       "name": "yoanm",
@@ -9,25 +13,26 @@
       "role": "Developer"
     }
   ],
+{% block provide %}{% endblock provide %}
+{% block suggest %}{% endblock suggest %}
   "support": {
-    "issues": "https://github.com/yoanm/defaultPhpRepository/issues"
+    "issues": "{{ github.url }}/issues"
   },
   "autoload": {
     "psr-0": {
-      "Yoanm\\DefaultPhpRepository": "src/"
+      "{{ escapedNamespace }}": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Technical\\Integration\\Yoanm\\DefaultPhpRepository\\": "tests/Technical/Integration",
-      "Technical\\Unit\\Yoanm\\DefaultPhpRepository\\": "tests/Technical/Unit",
-      "Functional\\Yoanm\\DefaultPhpRepository\\": "tests/Functional",
-      "Functional\\Yoanm\\DefaultPhpRepository\\BehatContext\\": "features/bootstrap"
+      "Technical\\Integration\\{{ escapedNamespace }}\\": "tests/Technical/Integration",
+      "Technical\\Unit\\{{ escapedNamespace }}\\": "tests/Technical/Unit",
+      "Functional\\{{ escapedNamespace }}\\": "tests/Functional",
+      "Functional\\{{ escapedNamespace }}\\BehatContext\\": "features/bootstrap"
     }
   },
   "require": {
-    "php": ">=5.5",
-    "twig/twig": "~1.0"
+    "php": ">=5.5"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.0",
@@ -53,7 +58,7 @@
     ],
     "f-test": [
       "./vendor/bin/phpunit --testsuite functional",
-      "./vendor/bin/behat --no-snippets --colors --format progress"
+      "./vendor/bin/behat --no-snippets --strict --colors --format progress"
     ],
     "t-test": [
       "./vendor/bin/phpunit --testsuite technical"

@@ -1,0 +1,14 @@
+{% extends '.travis.yml.twig' %}
+
+{% block env %}
+env:
+  - SYMFONY_VERSION=2.7.*
+  - SYMFONY_VERSION=2.8.*
+  - SYMFONY_VERSION=3.*
+
+{% endblock env %}
+
+{% block install %}
+{{ parent() }}
+  - composer require "symfony/symfony:\${SYMFONY_VERSION}"
+{% endblock install %}
