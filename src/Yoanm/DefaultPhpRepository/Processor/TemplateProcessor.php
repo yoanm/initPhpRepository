@@ -1,7 +1,6 @@
 <?php
 namespace Yoanm\DefaultPhpRepository\Processor;
 
-use Yoanm\DefaultPhpRepository\Exception\TargetFileExistsException;
 use Yoanm\DefaultPhpRepository\Helper\TemplateHelper;
 
 /**
@@ -26,8 +25,6 @@ class TemplateProcessor
     /**
      * @param string $templatePath
      * @param string $outputDir
-     *
-     * @throws TargetFileExistsException
      */
     public function process($templatePath, $outputDir = '.')
     {

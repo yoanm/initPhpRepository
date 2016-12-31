@@ -6,7 +6,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Filesystem\Filesystem;
-use Yoanm\DefaultPhpRepository\Exception\TargetFileExistsException;
 use Yoanm\DefaultPhpRepository\Helper\TemplateHelper;
 
 /**
@@ -59,35 +58,46 @@ class CommandTemplateHelper extends TemplateHelper
     /**
      * @param string $templateFilePath
      * @param string $outputFilePath
-     * @param bool   $overwrite overwrite even if present
-     *
-     * @throws TargetFileExistsException
      */
-    public function dumpTemplate($templateFilePath, $outputFilePath, $overwrite = false)
+    public function dumpTemplate($templateFilePath, $outputFilePath)
     {
         $this->output->write("            <info>$outputFilePath</info> : ");
-        $fileExist = $this->fileSystem->exists($outputFilePath);
-        $process = true;
-        if ($fileExist) {
-            if (false === $this->forceOverride && true === $this->skipExisting) {
-                $this->output->writeln('<comment>Skipped !</comment>');
-                $process = false;
-            } else {
-                $process = false;
-                if (true === $this->forceOverride) {
-                    $process = true;
-                    $this->output->writeln('<comment>Overriden !</comment>');
-                } elseif ($this->doOverwrite()) {
-                    $process = true;
-                }
-            }
-        }
+        list($fileExist, $process) = $this->validateDump($outputFilePath);
         if (true === $process) {
             parent::dumpTemplate($templateFilePath, $outputFilePath);
             if (false === $fileExist) {
                 $this->output->writeln('<info>Done</info>');
             }
         }
+    }
+
+    /**
+     * @param $outputFilePath
+     * @return array
+     */
+    protected function validateDump($outputFilePath)
+    {
+        $fileExist = $this->fileSystem->exists($outputFilePath);
+        $process = true;
+        if ($fileExist) {
+            if (false === $this->forceOverride && true === $this->skipExisting) {
+                $this->output->writeln('<comment>Skipped !</comment>');
+                $process = false;
+                return array($fileExist, $process);
+            } else {
+                $process = false;
+                if (true === $this->forceOverride) {
+                    $process = true;
+                    $this->output->writeln('<comment>Overriden !</comment>');
+                    return array($fileExist, $process);
+                } elseif ($this->doOverwrite()) {
+                    $process = true;
+                    return array($fileExist, $process);
+                }
+                return array($fileExist, $process);
+            }
+        }
+        return array($fileExist, $process);
     }
 
     /**@return bool

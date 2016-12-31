@@ -82,13 +82,7 @@ class VariableBagFactory
         $id = preg_replace('#[^/]+/(.*)#', '\1', $composerPackageName);
 
         $bag->set('id', $id);
-        $bag->set('name', ucwords(
-            str_replace(
-                '-',
-                ' ',
-                $id
-            )
-        ));
+        $bag->set('name', ucwords(str_replace('-', ' ', $id)));
 
         $bag->set('current.year', date('Y'));
     }

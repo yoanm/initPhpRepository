@@ -19,6 +19,8 @@ class InitCommand extends Command
     const TYPE_TEST = 'template.test';
     const TYPE_CI = 'template.ci';
 
+    const OUTPUT_LEVEL_SPACE = '    ';
+
     /**
      * {@inheritdoc}
      */
@@ -54,28 +56,20 @@ class InitCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $outputLevelSpace = '    ';
-
         $mode = $input->getArgument('type');
 
-        if (!in_array($mode, [Mode::PHP_LIBRARY, Mode::SYMFONY_LIBRARY, Mode::PROJECT])) {
-            $output->writeln(sprintf('<error>Unexpected mode "%s" !</error>', $mode));
-            $output->writeln('<info>Allowed mode :</info>');
-            $output->writeln(sprintf('%s<comment>%s</comment>', $outputLevelSpace, Mode::PHP_LIBRARY));
-            $output->writeln(sprintf('%s<comment>%s</comment>', $outputLevelSpace, Mode::SYMFONY_LIBRARY));
-            $output->writeln(sprintf('%s<comment>%s</comment>', $outputLevelSpace, Mode::PROJECT));
-
+        if (!$this->modeIsValid($output, $mode)) {
             return 1;
         }
-
-        $variableBag = (new VariableBagFactory())->load($mode);
-        $templatePathList = (new TemplatePathBagFactory())->load($mode);
 
         $skipExistingFile = false === $input->getOption('ask-before-override');
         $forceOverride = $input->getOption('force-override');
         if (true === $forceOverride) {
             $skipExistingFile = false;
         }
+
+        $variableBag = (new VariableBagFactory())->load($mode);
+        $templatePathList = (new TemplatePathBagFactory())->load($mode);
 
         $commandTemplateHelper = new CommandTemplateHelper(
             $this->getHelper('question'),
@@ -109,23 +103,23 @@ class InitCommand extends Command
                     } elseif ('Ci' === $header) {
                         $header = 'Continuous integration';
                     }
-                    $output->writeln(sprintf('<info>%s%s</info>', $outputLevelSpace, $header));
+                    $output->writeln(sprintf('<info>%s%s</info>', self::OUTPUT_LEVEL_SPACE, $header));
                 }
 
                 $output->writeln(sprintf(
                     '%s* %s : ',
-                    str_repeat($outputLevelSpace, 2),
+                    str_repeat(self::OUTPUT_LEVEL_SPACE, 2),
                     ucwords(str_replace('template.', '', str_replace($currentType.'.', '', $templateKey)))
                 ));
                 if (true === $input->getOption('list')) {
                     $output->writeln(sprintf(
                         '%s<comment>Id   : </comment><info>%s</info>',
-                        str_repeat($outputLevelSpace, 3),
+                        str_repeat(self::OUTPUT_LEVEL_SPACE, 3),
                         $templateKey
                     ));
                     $output->writeln(sprintf(
                         '%s<comment>File : </comment><info>%s</info>',
-                        str_repeat($outputLevelSpace, 3),
+                        str_repeat(self::OUTPUT_LEVEL_SPACE, 3),
                         $templatePath
                     ));
                 } else {
@@ -137,5 +131,29 @@ class InitCommand extends Command
             $output->writeln(sprintf('<error>Error -> %s</error>', $e->getMessage()));
             throw $e;
         }
+    }
+
+    protected function modeIsValid(OutputInterface $output, $mode)
+    {
+        $availableModeList = Mode::all();
+        if (!in_array($mode, $availableModeList)) {
+            $output->writeln(sprintf('<error>Unexpected mode "%s" !</error>', $mode));
+            $output->writeln(sprintf(
+                '<info>Allowed mode : %s </info>',
+                implode(
+                    ' / ',
+                    array_map(
+                        function ($availableMode) {
+                            return sprintf('<comment>%s</comment>', $availableMode);
+                        },
+                        $availableModeList
+                    )
+                )
+            ));
+
+            return false;
+        }
+
+        return true;
     }
 }

@@ -2,7 +2,6 @@
 namespace Yoanm\DefaultPhpRepository\Helper;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Yoanm\DefaultPhpRepository\Exception\TargetFileExistsException;
 
 /**
  * Class TemplateFileProcessor
@@ -45,8 +44,6 @@ class TemplateHelper
     /**
      * @param string $templateFilePath
      * @param string $outputFilePath
-     *
-     * @throws TargetFileExistsException
      */
     public function dumpTemplate($templateFilePath, $outputFilePath)
     {

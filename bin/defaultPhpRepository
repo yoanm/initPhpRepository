@@ -7,6 +7,9 @@ use Yoanm\DefaultPhpRepository\Command\InitCommand;
 
 $console = new Application();
 
-$console->add(new InitCommand());
+$command = new InitCommand();
+
+$console->add($command);
+$console->setDefaultCommand($command->getName(), true);
 
 $console->run();
