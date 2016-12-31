@@ -52,7 +52,7 @@
     ],
     "f-test": [
       "./vendor/bin/phpunit --testsuite functional",
-      "./vendor/bin/behat --no-snippets --strict --colors --format progress"
+      "./vendor/bin/behat --no-snippets --colors --format progress"
     ],
     "t-test": [
       "./vendor/bin/phpunit --testsuite technical"
