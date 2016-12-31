@@ -22,11 +22,7 @@ class VarFactory
         // - Git variables
         $this->setGitVariables($bag);
 
-        $id = str_replace(
-            '_',
-            '-',
-            ContainerBuilder::underscore($bag->get('github.id'))
-        );
+        $id = str_replace('_', '-', ContainerBuilder::underscore($bag->get('github.id')));
         $bag->set('id', $id);
         $bag->set('name', ucwords(str_replace('-', ' ', $id)));
 
@@ -54,12 +50,12 @@ class VarFactory
             throw new \Exception("Git username cannot be empty ! Use git config user.name 'NAME' to define it");
         }
 
-        $remoteListOutput = shell_exec('git remote -v show -n origin');
-        // Try with ssh mode else fallback to http mode
-        if (0 === preg_match('#github\.com:(.*)(?:\.git)$#m', $remoteListOutput, $matches)) {
-            preg_match('#github\.com\/([^\/]+\/[^\/]+)#m', $remoteListOutput, $matches);
-        }
+        preg_match('#github\.com(?:(?:(.*)\/)|(?::(.*)\.git))$#m', shell_exec('git remote -v show -n origin'), $matches);
         $gitId = trim($matches[1]);
+        $gitId = '' === $gitId
+            ? trim($matches[2])
+            : $gitId
+        ;
         if ('' === $gitId) {
             throw new \Exception("Unabled to define github id !");
         }

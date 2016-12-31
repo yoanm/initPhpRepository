@@ -16,14 +16,6 @@ use Yoanm\DefaultPhpRepository\Resolver\NamespaceResolver;
 
 class InitCommand extends Command
 {
-    const TYPE_INIT = 'template.init';
-    const TYPE_GIT = 'template.git';
-    const TYPE_COMPOSER = 'template.composer';
-    const TYPE_TEST = 'template.test';
-    const TYPE_CI = 'template.ci';
-
-    const OUTPUT_LEVEL_SPACE = '    ';
-
     /**
      * {@inheritdoc}
      */
@@ -89,8 +81,7 @@ class InitCommand extends Command
      */
     protected function validateRepositoryType(OutputInterface $output, $repositoryType)
     {
-        // Check type
-        $availableTypeList = [RepositoryType::LIBRARY, RepositoryType::PROJECT];
+        $availableTypeList = RepositoryType::all();
         if (!in_array($repositoryType, $availableTypeList)) {
             $output->writeln(sprintf('<error>Unexpected type "%s" !</error>', $repositoryType));
             $output->writeln(sprintf(

@@ -10,7 +10,7 @@ class RepositoryType
     const PROJECT = 'project';
 
     /**
-     * @return array All available modes
+     * @return array All available types
      */
     public static function all()
     {
