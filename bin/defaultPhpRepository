@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+require_once(__DIR__.'/../vendor/autoload.php');
+
+use Symfony\Component\Console\Application;
+use Yoanm\DefaultPhpRepository\Command\InitCommand;
+
+$console = new Application();
+
+$command = new InitCommand();
+
+$console->add($command);
+$console->setDefaultCommand($command->getName(), true);
+
+$console->run();

@@ -6,13 +6,13 @@ php:
   - '7.0'
 
 sudo: false
-
+%travis.config.extra.env%
 matrix:
   fast_finish: true
 
 install:
-  - composer install
-
+  - composer build-ci
+%travis.config.extra.install%
 script:
   - composer run-script test
 
