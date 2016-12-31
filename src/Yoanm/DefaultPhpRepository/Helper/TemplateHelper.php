@@ -2,7 +2,6 @@
 namespace Yoanm\DefaultPhpRepository\Helper;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Yoanm\DefaultPhpRepository\Factory\VarFactory;
 use Yoanm\DefaultPhpRepository\Registry\TemplateRegistry;
 use Yoanm\DefaultPhpRepository\Resolver\NamespaceResolver;
 

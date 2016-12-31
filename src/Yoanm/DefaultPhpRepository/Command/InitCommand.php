@@ -6,12 +6,12 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Yoanm\DefaultPhpRepository\Processor\InitCommandProcessor;
-use Yoanm\DefaultPhpRepository\Processor\ListCommandProcessor;
 use Yoanm\DefaultPhpRepository\Factory\TemplateListFactory;
 use Yoanm\DefaultPhpRepository\Factory\VarFactory;
 use Yoanm\DefaultPhpRepository\Helper\TemplateHelper;
 use Yoanm\DefaultPhpRepository\Model\Template;
+use Yoanm\DefaultPhpRepository\Processor\InitCommandProcessor;
+use Yoanm\DefaultPhpRepository\Processor\ListCommandProcessor;
 use Yoanm\DefaultPhpRepository\Resolver\NamespaceResolver;
 
 class InitCommand extends Command
@@ -32,7 +32,7 @@ class InitCommand extends Command
         $this->setName('init')
             ->setDescription('Will init the current github repository with default file templates')
             ->addArgument(
-                'repository_type',
+                'type',
                 InputArgument::OPTIONAL,
                 'Repository type (library/project)',
                 RepositoryType::PROJECT
@@ -65,7 +65,7 @@ class InitCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $repositoryType = $input->getArgument('repository_type');
+        $repositoryType = $input->getArgument('type');
         $repositorySubType = true === $input->getOption('symfony')
             ? RepositorySubType::SYMFONY
             : RepositorySubType::PHP

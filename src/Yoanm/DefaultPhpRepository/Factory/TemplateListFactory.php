@@ -4,8 +4,8 @@ namespace Yoanm\DefaultPhpRepository\Factory;
 use Symfony\Component\Finder\Finder;
 use Yoanm\DefaultPhpRepository\Command\RepositoryType;
 use Yoanm\DefaultPhpRepository\Helper\TemplateHelper;
-use Yoanm\DefaultPhpRepository\Model\Template;
 use Yoanm\DefaultPhpRepository\Model\FolderTemplate;
+use Yoanm\DefaultPhpRepository\Model\Template;
 
 /**
  * Class TemplateListFactory
