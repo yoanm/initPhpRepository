@@ -33,8 +33,18 @@ class InitCommand extends Command
                 Mode::PHP_LIBRARY
             )
             ->addOption('list', 'l', InputOption::VALUE_NONE, 'List template file instead of creation them')
-            ->addOption('id', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'process only given ids')
-            ->addOption('ask-before-override', 'a', InputOption::VALUE_NONE, 'Will ask before overriding an existing file')
+            ->addOption(
+                'id',
+                null,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'process only given ids'
+            )
+            ->addOption(
+                'ask-before-override',
+                'a',
+                InputOption::VALUE_NONE,
+                'Will ask before overriding an existing file'
+            )
             ->addOption('force-override', 'f', InputOption::VALUE_NONE, 'Override existing files by default')
         ;
     }

@@ -12,7 +12,8 @@ class CommandTemplateProcessor extends TemplateProcessor
     /**
      * @param CommandTemplateHelper $commandTemplateHelper
      */
-    public function __construct(CommandTemplateHelper $commandTemplateHelper) {
+    public function __construct(CommandTemplateHelper $commandTemplateHelper)
+    {
         parent::__construct($commandTemplateHelper);
     }
 }

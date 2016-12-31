@@ -25,7 +25,7 @@ class TemplateHelper
     public function __construct(array $variableList, array $extraTemplatePath = [])
     {
         $this->variableList = $variableList;
-        foreach($this->variableList as $variableId => $variableValue) {
+        foreach ($this->variableList as $variableId => $variableValue) {
             $variableId = sprintf('%%%s%%', $variableId);
             $this->variableNameList[$variableId] = $variableId;
         }
@@ -44,15 +44,6 @@ class TemplateHelper
             PathHelper::separator(),
             PathHelper::separator()
         );
-        // compile this regexp at startup (no need to to it each time)
-        $this->filePathResolverRegexp = sprintf(
-            '#%s?(?:[^%s]+%s)*[^%s]+\.tmpl$#',
-            PathHelper::separator(),
-            PathHelper::separator(),
-            PathHelper::separator(),
-            PathHelper::separator()
-        );
-
 
         $this->fs = new Filesystem();
     }
@@ -60,17 +51,17 @@ class TemplateHelper
     /**
      * @param string $templateFilePath
      * @param string $outputFilePath
-     * @param bool   $overwrite overwrite even if present
      *
      * @throws TargetFileExistsException
      */
-    public function dumpTemplate($templateFilePath, $outputFilePath, $overwrite = false)
+    public function dumpTemplate($templateFilePath, $outputFilePath)
     {
         $this->fs->dumpFile($outputFilePath, $this->loadTemplate($templateFilePath));
     }
 
     /**
      * @param string $templateFilePath
+     * @param string $outputDir
      *
      * @return string
      */

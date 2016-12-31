@@ -19,11 +19,13 @@ class CommandTemplateHelper extends TemplateHelper
     /** @var OutputInterface */
     private $output;
     /** @var Filesystem */
-    private $fs;
+    private $fileSystem;
     /** @var bool */
     private $skipExisting;
     /** @var bool */
     private $forceOverride;
+    /** @var QuestionHelper */
+    private $questionHelper;
 
     /**
      * @param QuestionHelper  $questionHelper
@@ -46,7 +48,7 @@ class CommandTemplateHelper extends TemplateHelper
         parent::__construct($variableList, $extraTemplatePath);
 
         $this->questionHelper = $questionHelper;
-        $this->fs = new Filesystem();
+        $this->fileSystem = new Filesystem();
         $this->input = $input;
         $this->output = $output;
 
@@ -64,7 +66,7 @@ class CommandTemplateHelper extends TemplateHelper
     public function dumpTemplate($templateFilePath, $outputFilePath, $overwrite = false)
     {
         $this->output->write("            <info>$outputFilePath</info> : ");
-        $fileExist = $this->fs->exists($outputFilePath);
+        $fileExist = $this->fileSystem->exists($outputFilePath);
         $process = true;
         if ($fileExist) {
             if (false === $this->forceOverride && true === $this->skipExisting) {

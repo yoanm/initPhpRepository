@@ -177,7 +177,6 @@ EOS;
             $extraList['readme.extra.badges.travis'] = <<<EOS
  [![Symfony Versions](https://img.shields.io/badge/Symfony-2.7%%20%%2F%%202.8%%20%%2F%%203.0-312933.svg)](https://symfony.com/)
 EOS;
-
         }
 
         foreach ($extraList as $extraKey => $extraValue) {

@@ -17,10 +17,10 @@ class TemplateProcessor
     /**
      * @param TemplateHelper $templateHelper
      */
-    public function __construct(TemplateHelper $templateHelper) {
+    public function __construct(TemplateHelper $templateHelper)
+    {
         $this->templateFileProcessor = new TemplateFileProcessor($templateHelper);
         $this->templateFolderProcessor = new TemplateFolderProcessor($templateHelper);
-
     }
 
     /**
