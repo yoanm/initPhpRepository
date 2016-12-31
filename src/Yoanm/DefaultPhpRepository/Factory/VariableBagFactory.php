@@ -4,7 +4,6 @@ namespace Yoanm\DefaultPhpRepository\Factory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Yoanm\DefaultPhpRepository\Command\Mode;
-use Yoanm\DefaultPhpRepository\Helper\PathHelper;
 
 /**
  * Class VariableBagFactory
@@ -55,7 +54,7 @@ class VariableBagFactory
         $bag->set('git.repository.url_id', $githubRepositoryUrlId);
         $tmp = explode('/', $githubRepositoryUrlId);
         $bag->set('git.repository.url_id_without_vendor', array_pop($tmp));
-        $bag->set('git.repository.url', sprintf('github.com%s%s', PathHelper::separator(), $githubRepositoryUrlId));
+        $bag->set('git.repository.url', sprintf('github.com/%s', $githubRepositoryUrlId));
 
         // - Composer variables
         $composerPackageName = str_replace('_', '-', ContainerBuilder::underscore($githubRepositoryUrlId));

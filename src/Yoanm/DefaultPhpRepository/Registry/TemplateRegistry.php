@@ -38,10 +38,8 @@ class TemplateRegistry
             self::$rootTemplateDir = PathHelper::appendPathSeparator(
                 realpath(
                     sprintf(
-                        '%s%s%s',
-                        PathHelper::appendPathSeparator(__DIR__),
-                        PathHelper::implodePathComponentList(array_fill(0, 4, '..')), // Go 4 level up
-                        'templates'
+                        '%s../../../../templates',
+                        PathHelper::appendPathSeparator(__DIR__)
                     )
                 )
             );

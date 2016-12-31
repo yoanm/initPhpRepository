@@ -37,13 +37,7 @@ class TemplateHelper
         }
 
         // compile this regexp at startup (no need to to it each time)
-        $this->filenameResolverRegexp = sprintf(
-            '#%s?(?:[^%s]+%s)*([^%s]+)\.tmpl$#',
-            PathHelper::separator(),
-            PathHelper::separator(),
-            PathHelper::separator(),
-            PathHelper::separator()
-        );
+        $this->filenameResolverRegexp = '#/?(?:[^/]+/)*([^/]+)\.tmpl$#';
 
         $this->fs = new Filesystem();
     }

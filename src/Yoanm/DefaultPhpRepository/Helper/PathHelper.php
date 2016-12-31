@@ -7,21 +7,6 @@ namespace Yoanm\DefaultPhpRepository\Helper;
 class PathHelper
 {
     /**
-     * @param string[] $componentList
-     *
-     * @return string
-     */
-    public static function implodePathComponentList(array $componentList)
-    {
-        $path = '';
-        foreach ($componentList as $component) {
-            $path .= self::appendPathSeparator($component);
-        }
-
-        return $path;
-    }
-
-    /**
      * @param string $component
      *
      * @return string
@@ -41,6 +26,6 @@ class PathHelper
 
     public static function separator()
     {
-        return DIRECTORY_SEPARATOR;
+        return '/';
     }
 }
