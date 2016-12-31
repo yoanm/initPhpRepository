@@ -114,11 +114,13 @@ class VariableBagFactory
         ];
 
         if (Mode::PROJECT !== $mode) {
+// @codingStandardsIgnoreStart
             $extraList['readme.extra.badges'] = <<<EOS
 
 [![Travis Build Status](https://img.shields.io/travis/%git.repository.url_id%/master.svg?label=travis)](https://travis-ci.org/%git.repository.url_id%) [![PHP Versions](https://img.shields.io/badge/php-5.5%%20%%2F%%205.6%%20%%2F%%207.0-8892BF.svg)](https://php.net/)%readme.extra.badges.travis%
 
 EOS;
+// @codingStandardsIgnoreEnd
             // Git ignore - only project need a composer.lock
             $extraList['gitignore.extra'] = <<<EOS
 
@@ -173,9 +175,11 @@ EOS;
 
 EOS;
             // Readme - extra travis badges
+// @codingStandardsIgnoreStart
             $extraList['readme.extra.badges.travis'] = <<<EOS
  [![Symfony Versions](https://img.shields.io/badge/Symfony-2.7%%20%%2F%%202.8%%20%%2F%%203.0-312933.svg)](https://symfony.com/)
 EOS;
+// @codingStandardsIgnoreEnd
         }
 
         foreach ($extraList as $extraKey => $extraValue) {
