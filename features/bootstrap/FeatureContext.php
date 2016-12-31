@@ -1,9 +1,7 @@
 <?php
-namespace Functional\Yoanm\XXX\Context;
+namespace Functional\Yoanm\DefaultPhpRepository\BehatContext;
 
 use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\PyStringNode;
-use Behat\Gherkin\Node\TableNode;
 
 /**
  * Defines application features from the specific context.
