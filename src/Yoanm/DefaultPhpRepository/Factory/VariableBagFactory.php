@@ -44,6 +44,7 @@ class VariableBagFactory
         $gitUsername = ContainerBuilder::camelize($gitUsername);
 
         $remoteListOutput = shell_exec('git remote -v show -n origin');
+
         if (0 === preg_match('#github\.com:(.*)(?:\.git)$#m', $remoteListOutput, $matches)) {
             preg_match('#github\.com\/([^\/]+\/[^\/]+)#m', $remoteListOutput, $matches);
         }
@@ -101,7 +102,7 @@ class VariableBagFactory
     protected function setExtraVar(ParameterBag $bag, $mode)
     {
         $extraList = [
-            'gitignore.extra.project' => '',
+            'gitignore.extra' => '',
             'composer.config.extra.description' => '',
             'composer.config.extra.keyword' => '',
             'composer.config.extra.version' => '',
@@ -109,15 +110,22 @@ class VariableBagFactory
             'composer.config.extra.suggest' => '',
             'travis.config.extra.env' => '',
             'travis.config.extra.install' => '',
-            'readme.extra.travis_badges' => '',
+            'readme.extra.badges' => '',
+            'readme.extra.badges.travis' => '',
             'readme.extra.install_steps' => 'composer require %composer.package.name%',
         ];
 
         if (Mode::PROJECT !== $mode) {
-            // Git ignore - only project need a composer.lock
-            $extraList['gitignore.extra.project'] = <<<EOS
+            $extraList['readme.extra.badges'] = <<<EOS
 
+
+[![Travis Build Status](https://img.shields.io/travis/%git.repository.url_id%/master.svg?label=travis)](https://travis-ci.org/%git.repository.url_id%) [![PHP Versions](https://img.shields.io/badge/php-5.5%%20%%2F%%205.6%%20%%2F%%207.0-8892BF.svg)](https://php.net/)%readme.extra.badges.travis%
+EOS;
+
+            // Git ignore - only project need a composer.lock
+            $extraList['gitignore.extra'] = <<<EOS
 composer.lock
+
 EOS;
             // Composer
             $extraList['composer.config.extra.description'] = <<<EOS
@@ -151,7 +159,7 @@ EOS;
             $extraList['readme.extra.install_steps'] = <<<EOS
 git clone git@github.com:%git.repository.url_id%.git
 cd %git.repository.url_id_without_vendor%
-composer run build
+composer build
 EOS;
         }
 
@@ -170,8 +178,8 @@ EOS;
   - composer require "symfony/symfony:\${SYMFONY_VERSION}"
 EOS;
             // Readme - extra travis badges
-            $extraList['readme.extra.travis_badges'] = <<<EOS
-[![Symfony Versions](https://img.shields.io/badge/Symfony-2.7%%20%%2F%%202.8%%20%%2F%%203.0-312933.svg)](https://symfony.com/)
+            $extraList['readme.extra.badges.travis'] = <<<EOS
+ [![Symfony Versions](https://img.shields.io/badge/Symfony-2.7%%20%%2F%%202.8%%20%%2F%%203.0-312933.svg)](https://symfony.com/)
 EOS;
 
         }

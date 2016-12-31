@@ -1,28 +1,28 @@
 {
-  "name": "yoanm/default-php-repository",
-  "type": "project",
-  "license": "MIT",
+  "name": "%composer.package.name%",
+  "type": "%composer.config.type%",
+  "license": "MIT",%composer.config.extra.version%%composer.config.extra.description%%composer.config.extra.keyword%
   "authors": [
     {
       "name": "yoanm",
       "email": "yoanm@users.noreply.github.com",
       "role": "Developer"
     }
-  ],
+  ],%composer.config.extra.provide%%composer.config.extra.suggest%
   "support": {
-    "issues": "https://github.com/yoanm/defaultPhpRepository/issues"
+    "issues": "https://%git.repository.url%/issues"
   },
   "autoload": {
     "psr-0": {
-      "Yoanm\\DefaultPhpRepository": "src/"
+      "%autoload.namespace.psr_0%": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Technical\\Integration\\Yoanm\\DefaultPhpRepository\\": "tests/Technical/Integration",
-      "Technical\\Unit\\Yoanm\\DefaultPhpRepository\\": "tests/Technical/Unit",
-      "Functional\\Yoanm\\DefaultPhpRepository\\": "tests/Functional",
-      "Functional\\Yoanm\\DefaultPhpRepository\\BehatContext\\": "features/bootstrap"
+      "Technical\\Integration\\%autoload.namespace.psr_0%\\": "tests/Technical/Integration",
+      "Technical\\Unit\\%autoload.namespace.psr_0%\\": "tests/Technical/Unit",
+      "Functional\\%autoload.namespace.psr_0%\\": "tests/Functional",
+      "Functional\\%autoload.namespace.psr_0%\\BehatContext\\": "features/bootstrap"
     }
   },
   "require": {
@@ -35,14 +35,14 @@
   },
   "scripts": {
     "build": [
-      "@composer install --prefer-dist --optimize-autoloader --ansi --verbose --no-suggest --no-interaction"
+      "@composer install --prefer-dist --optimize-autoloader --ansi --no-suggest --no-interaction"
     ],
-    "ci-build": [
+    "build-ci": [
       "mkdir -p build/coverage",
-      "@composer install --prefer-dist --ansi --verbose --no-suggest --no-interaction"
+      "@composer install --prefer-dist --ansi --no-suggest --no-interaction"
     ],
     "ci": [
-      "@ci-build",
+      "@build-ci",
       "@cs",
       "@test"
     ],

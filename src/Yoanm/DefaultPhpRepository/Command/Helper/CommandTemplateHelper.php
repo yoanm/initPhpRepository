@@ -66,26 +66,26 @@ class CommandTemplateHelper extends TemplateHelper
     {
         $this->output->write("            <info>$outputFilePath</info> : ");
         $fileExist = $this->fs->exists($outputFilePath);
+        $process = true;
         if ($fileExist) {
             if (false === $this->forceOverride && true === $this->skipExisting) {
                 $this->output->writeln('<comment>Skipped !</comment>');
+                $process = false;
             } else {
-                $override = false;
+                $process = false;
                 if (true === $this->forceOverride) {
-                    $override = true;
+                    $process = true;
                     $this->output->writeln('<comment>Overriden !</comment>');
                 } elseif ($this->doOverwrite()) {
-                    $override = true;
-                }
-                if (false === $override) {
-                    return;
+                    $process = true;
                 }
             }
         }
-
-        parent::dumpTemplate($templateFilePath, $outputFilePath);
-        if (false === $fileExist) {
-            $this->output->writeln('<info>Done</info>');
+        if (true === $process) {
+            parent::dumpTemplate($templateFilePath, $outputFilePath);
+            if (false === $fileExist) {
+                $this->output->writeln('<info>Done</info>');
+            }
         }
     }
 
