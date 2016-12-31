@@ -1,73 +1,70 @@
 {
-    "name": "yoanm/default-php-repository",
-    "type": "project",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "yoanm",
-            "email": "yoanm@users.noreply.github.com",
-            "role": "Developer"
-        }
-    ],
-    "support": {
-        "issues": "https://yoanm/defaultPhpRepository/issues"
-    },
-    "autoload": {
-        "psr-0": {
-            "Yoanm\\DefaultPhpRepository": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Technical\\Integration\\Yoanm\\DefaultPhpRepository\\": "tests/Technical/Integration",
-            "Technical\\Unit\\Yoanm\\DefaultPhpRepository\\": "tests/Technical/Unit",
-            "Functional\\": "tests/Functional",
-            "Functional\\Yoanm\\DefaultPhpRepository\\BehatContext\\": "features/bootstrap"
-        }
-    },
-    "require": {
-        "php": ">=5.5",
-        "symfony/console": "3.*",
-        "symfony/filesystem": "3.*",
-        "symfony/finder": "3.*"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "~4.0",
-        "squizlabs/php_codesniffer": "2.*",
-        "behat/behat": "~3.0"
-    },
-    "scripts": {
-        "build": [
-            "@composer install --prefer-dist --optimize-autoloader --ansi --verbose --no-suggest --no-interaction"
-        ],
-        "ci-build": [
-            "mkdir -p build/coverage",
-            "@composer install --prefer-dist --ansi --verbose --no-suggest --no-interaction"
-        ],
-        "ci": [
-            "@ci-build",
-            "@cs",
-            "@test"
-        ],
-        "test": [
-            "@t-test",
-            "@f-test"
-        ],
-        "f-test": [
-            "./vendor/bin/phpunit --testsuite functional",
-            "./vendor/bin/behat --no-snippets --strict --colors --format progress"
-        ],
-        "t-test": [
-            "./vendor/bin/phpunit --testsuite technical"
-        ],
-        "cs": [
-            "./vendor/bin/phpcs"
-        ],
-        "coverage": [
-            "./vendor/bin/phpunit --coverage-html coverage"
-        ],
-        "coverage-clover": [
-            "./vendor/bin/phpunit --coverage-clover build/coverage/clover.xml"
-        ]
+  "name": "yoanm/default-php-repository",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "yoanm",
+      "email": "yoanm@users.noreply.github.com",
+      "role": "Developer"
     }
+  ],
+  "support": {
+    "issues": "https://github.com/yoanm/defaultPhpRepository/issues"
+  },
+  "autoload": {
+    "psr-0": {
+      "Yoanm\\DefaultPhpRepository": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Technical\\Integration\\Yoanm\\DefaultPhpRepository\\": "tests/Technical/Integration",
+      "Technical\\Unit\\Yoanm\\DefaultPhpRepository\\": "tests/Technical/Unit",
+      "Functional\\Yoanm\\DefaultPhpRepository\\": "tests/Functional",
+      "Functional\\Yoanm\\DefaultPhpRepository\\BehatContext\\": "features/bootstrap"
+    }
+  },
+  "require": {
+    "php": ">=5.5"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0",
+    "squizlabs/php_codesniffer": "2.*",
+    "behat/behat": "~3.0"
+  },
+  "scripts": {
+    "build": [
+      "@composer install --prefer-dist --optimize-autoloader --ansi --no-suggest --no-interaction"
+    ],
+    "build-ci": [
+      "mkdir -p build/coverage",
+      "@composer install --prefer-dist --ansi --no-suggest --no-interaction"
+    ],
+    "ci": [
+      "@build-ci",
+      "@cs",
+      "@test"
+    ],
+    "test": [
+      "@t-test",
+      "@f-test"
+    ],
+    "f-test": [
+      "./vendor/bin/phpunit --testsuite functional",
+      "./vendor/bin/behat --no-snippets --strict --colors --format progress"
+    ],
+    "t-test": [
+      "./vendor/bin/phpunit --testsuite technical"
+    ],
+    "cs": [
+      "./vendor/bin/phpcs"
+    ],
+    "coverage": [
+      "./vendor/bin/phpunit --coverage-html coverage"
+    ],
+    "coverage-clover": [
+      "./vendor/bin/phpunit --coverage-clover build/coverage/clover.xml"
+    ]
+  }
 }
