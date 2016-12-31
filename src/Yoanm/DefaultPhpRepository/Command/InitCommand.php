@@ -86,10 +86,7 @@ class InitCommand extends Command
             $output->writeln(sprintf('<error>Unexpected type "%s" !</error>', $repositoryType));
             $output->writeln(sprintf(
                 '<info>Allowed type : %s </info>',
-                implode(
-                    ' / ',
-                    array_map(
-                        function ($availableMode) {
+                implode(' / ', array_map(function ($availableMode) {
                             return sprintf('<comment>%s</comment>', $availableMode);
                         },
                         $availableTypeList
@@ -115,26 +112,23 @@ class InitCommand extends Command
      */
     protected function getProcessor(InputInterface $input, OutputInterface $output, array $templateList, $repositoryType)
     {
-        // Default processor
-        $processor = new ListCommandProcessor($this->getHelper('question'), $input, $output, $templateList);
+        $forceOverride = $input->getOption('force-override');
+        $skipExisting = true === $forceOverride
+            ? false
+            : false === $input->getOption('ask-before-override')
+        ;
 
-        if (false === $input->getOption('list')) {
-
-            $forceOverride = $input->getOption('force-override');
-            $skipExisting = true === $forceOverride
-                ? false
-                : false === $input->getOption('ask-before-override')
-            ;
-            $templateHelper = new TemplateHelper(
-                new \Twig_Environment(null, ['autoescape' => false]),
-                (new VarFactory())->create($repositoryType)
-            );
-
+        if (true === $input->getOption('list')) {
+            $processor = new ListCommandProcessor($this->getHelper('question'), $input, $output, $templateList);
+        } else {
             $processor = new InitCommandProcessor(
                 $this->getHelper('question'),
                 $input,
                 $output,
-                $templateHelper,
+                new TemplateHelper(
+                    new \Twig_Environment(null, ['autoescape' => false]),
+                    (new VarFactory())->create(RepositoryType::PROJECT === $repositoryType)
+                ),
                 $templateList,
                 $skipExisting,
                 $forceOverride,

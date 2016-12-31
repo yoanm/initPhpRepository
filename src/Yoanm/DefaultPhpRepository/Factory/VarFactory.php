@@ -4,6 +4,7 @@ namespace Yoanm\DefaultPhpRepository\Factory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Yoanm\DefaultPhpRepository\Command\Mode;
+use Yoanm\DefaultPhpRepository\Command\RepositoryType;
 
 /**
  * Class VarFactory
@@ -11,23 +12,22 @@ use Yoanm\DefaultPhpRepository\Command\Mode;
 class VarFactory
 {
     /**
-     * @return []
-     *
+     * @param bool $isProject
+     * @return array
      * @throws \Exception
      */
-    public function create($repositoryType)
+    public function create($isProject = true)
     {
         $bag = new ParameterBag();
 
         // - Git variables
         $this->setGitVariables($bag);
 
-        $id = str_replace('_', '-', ContainerBuilder::underscore($bag->get('github.id')));
-        $bag->set('id', $id);
-        $bag->set('name', ucwords(str_replace('-', ' ', $id)));
+        $bag->set('id', str_replace('_', '-', ContainerBuilder::underscore($bag->get('github.id'))));
+        $bag->set('name', ucwords(str_replace('_', ' ', ContainerBuilder::underscore($bag->get('github.id')))));
 
         // - Composer variables
-        $this->setComposerVariables($bag, $repositoryType);
+        $this->setComposerVariables($bag, $isProject);
         // - Autoloading
         $this->setAutoloadVariables($bag);
 
@@ -72,19 +72,12 @@ class VarFactory
 
     /**
      * @param ParameterBag $bag
-     * @param $repositoryType
+     * @param bool         $isProject
      */
-    protected function setComposerVariables(ParameterBag $bag, $repositoryType)
+    protected function setComposerVariables(ParameterBag $bag, $isProject)
     {
-        $bag->set(
-            'composer.package.name',
-            str_replace(
-                '_',
-                '-',
-                ContainerBuilder::underscore($bag->get('git.id'))
-            )
-        );
-        $bag->set('composer.config.type', $repositoryType);
+        $bag->set('composer.package.name', str_replace('_', '-', ContainerBuilder::underscore($bag->get('git.id'))));
+        $bag->set('composer.config.type', true === $isProject ? RepositoryType::PROJECT : RepositoryType::LIBRARY);
     }
 
     /**
