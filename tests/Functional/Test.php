@@ -3,7 +3,7 @@ namespace Functional\Yoanm\DefaultPhpRepository;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
-    /** @var TESTED_CLASS */
+    /** @var \stdClass */
     private $object;
 
     /**
@@ -11,6 +11,6 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new TESTED_CLASS();
+        $this->object = new \stdClass();
     }
 }
