@@ -1,8 +1,8 @@
 <?php
-namespace Yoanm\DefaultPhpRepository\Helper;
+namespace Yoanm\InitPhpRepository\Helper;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Yoanm\DefaultPhpRepository\Resolver\NamespaceResolver;
+use Yoanm\InitPhpRepository\Resolver\NamespaceResolver;
 
 /**
  * Class TemplateFileProcessor

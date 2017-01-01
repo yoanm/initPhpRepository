@@ -1,9 +1,9 @@
 <?php
-namespace Yoanm\DefaultPhpRepository\Resolver;
+namespace Yoanm\InitPhpRepository\Resolver;
 
-use Yoanm\DefaultPhpRepository\Command\RepositorySubType;
-use Yoanm\DefaultPhpRepository\Command\RepositoryType;
-use Yoanm\DefaultPhpRepository\Model\Template;
+use Yoanm\InitPhpRepository\Command\RepositorySubType;
+use Yoanm\InitPhpRepository\Command\RepositoryType;
+use Yoanm\InitPhpRepository\Model\Template;
 
 /**
  * Class NamespaceResolver

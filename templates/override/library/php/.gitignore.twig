@@ -1,4 +1,4 @@
 {% extends '.gitignore.twig' %}
 {% block body%}
-{{ parent() }}composer.lock
+{% spaceless %}{{ parent() }} composer.lock {# Library should not include composer.lock #}{% endspaceless %}
 {% endblock body %}

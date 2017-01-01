@@ -1,10 +1,10 @@
 <?php
-namespace Yoanm\DefaultPhpRepository\Processor;
+namespace Yoanm\InitPhpRepository\Processor;
 
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Yoanm\DefaultPhpRepository\Helper\CommandHelper;
-use Yoanm\DefaultPhpRepository\Model\FolderTemplate;
-use Yoanm\DefaultPhpRepository\Model\Template;
+use Yoanm\InitPhpRepository\Helper\CommandHelper;
+use Yoanm\InitPhpRepository\Model\FolderTemplate;
+use Yoanm\InitPhpRepository\Model\Template;
 
 /**
  * Class InitRepositoryProcessor

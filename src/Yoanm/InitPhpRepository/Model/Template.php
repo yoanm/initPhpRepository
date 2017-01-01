@@ -1,5 +1,5 @@
 <?php
-namespace Yoanm\DefaultPhpRepository\Model;
+namespace Yoanm\InitPhpRepository\Model;
 
 /**
  * Class Template

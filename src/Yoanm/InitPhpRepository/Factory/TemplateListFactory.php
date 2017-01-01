@@ -1,12 +1,12 @@
 <?php
-namespace Yoanm\DefaultPhpRepository\Factory;
+namespace Yoanm\InitPhpRepository\Factory;
 
 use Symfony\Component\Finder\Finder;
-use Yoanm\DefaultPhpRepository\Command\RepositoryType;
-use Yoanm\DefaultPhpRepository\Helper\TemplateHelper;
-use Yoanm\DefaultPhpRepository\Model\FolderTemplate;
-use Yoanm\DefaultPhpRepository\Model\Template;
-use Yoanm\DefaultPhpRepository\Resolver\NamespaceResolver;
+use Yoanm\InitPhpRepository\Command\RepositoryType;
+use Yoanm\InitPhpRepository\Helper\TemplateHelper;
+use Yoanm\InitPhpRepository\Model\FolderTemplate;
+use Yoanm\InitPhpRepository\Model\Template;
+use Yoanm\InitPhpRepository\Resolver\NamespaceResolver;
 
 /**
  * Class TemplateListFactory
@@ -75,6 +75,7 @@ class TemplateListFactory
 
     /**
      * @param $repositoryType
+     *
      * @return array
      */
     protected function getTemplateList($repositoryType)

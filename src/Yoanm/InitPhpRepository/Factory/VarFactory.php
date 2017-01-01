@@ -1,9 +1,9 @@
 <?php
-namespace Yoanm\DefaultPhpRepository\Factory;
+namespace Yoanm\InitPhpRepository\Factory;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Yoanm\DefaultPhpRepository\Command\RepositoryType;
+use Yoanm\InitPhpRepository\Command\RepositoryType;
 
 /**
  * Class VarFactory
