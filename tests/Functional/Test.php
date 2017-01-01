@@ -1,5 +1,5 @@
 <?php
-namespace Functional\Yoanm\DefaultPhpRepository;
+namespace Functional\Yoanm\InitPhpRepository;
 
 class Test extends \PHPUnit_Framework_TestCase
 {

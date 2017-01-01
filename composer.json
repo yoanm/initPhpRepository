@@ -1,5 +1,5 @@
 {
-  "name": "yoanm/default-php-repository",
+  "name": "yoanm/init-php-repository",
   "type": "project",
   "license": "MIT",
   "version": "0.1.0",
@@ -11,24 +11,23 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/yoanm/defaultPhpRepository/issues"
+    "issues": "https://github.com/yoanm/initPhpRepository/issues"
   },
   "autoload": {
     "psr-0": {
-      "Yoanm\\DefaultPhpRepository": "src/"
+      "Yoanm\\InitPhpRepository": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Technical\\Integration\\Yoanm\\DefaultPhpRepository\\": "tests/Technical/Integration",
-      "Technical\\Unit\\Yoanm\\DefaultPhpRepository\\": "tests/Technical/Unit",
-      "Functional\\Yoanm\\DefaultPhpRepository\\": "tests/Functional",
-      "Functional\\Yoanm\\DefaultPhpRepository\\BehatContext\\": "features/bootstrap"
+      "Technical\\Integration\\Yoanm\\InitPhpRepository\\": "tests/Technical/Integration",
+      "Technical\\Unit\\Yoanm\\InitPhpRepository\\": "tests/Technical/Unit",
+      "Functional\\Yoanm\\InitPhpRepository\\": "tests/Functional",
+      "Functional\\Yoanm\\InitPhpRepository\\BehatContext\\": "features/bootstrap"
     }
   },
   "require": {
-    "php": ">=5.5",
-    "twig/twig": "~1.0"
+    "php": ">=5.5"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.0",
