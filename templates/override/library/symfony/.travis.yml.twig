@@ -9,6 +9,5 @@ env:
 {% endblock env %}
 
 {% block install %}
-{{ parent() }}
-  - composer require "symfony/symfony:\${SYMFONY_VERSION}"
+{{ parent() }}  - composer require "symfony/symfony:${SYMFONY_VERSION}"
 {% endblock install %}

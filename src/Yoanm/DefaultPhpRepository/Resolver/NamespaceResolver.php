@@ -39,6 +39,7 @@ class NamespaceResolver
                 $subNamespace = self::SYMFONY_LIBRARY_NAMESPACE;
                 $this->setNamespace($templateList, 'ci.travis', $subNamespace);
                 $this->setNamespace($templateList, 'git.readme', $subNamespace);
+                $this->setNamespace($templateList, 'ci.scrutinizer', $subNamespace);
             }
         } else {
             $this->setNamespace($templateList, 'ci.scrutinizer', $namespace);

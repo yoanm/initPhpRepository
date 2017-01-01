@@ -27,6 +27,7 @@ build:
         postgresql: false
         elasticsearch: false
         redis: false
+{% block env_var %}{% endblock env_var %}
     tests:
         override:
 {% block test %}
