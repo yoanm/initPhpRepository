@@ -17,33 +17,33 @@ composer build
 Go to repository folder an type : 
  * Library
 ```bash
-bin/defaultPhpRepository library
+PATH_TO_BIN/initPhpRepository library
 ```
  * Project
 Go to project repository folder an type :
 ```bash
-bin/defaultPhpRepository [project]
+PATH_TO_BIN/initPhpRepository [project]
 ```
 
 ## Symfony
 In case the **library** is used in symfony invironment, type the following : 
 ```bash
-bin/defaultPhpRepository library --symfony
+PATH_TO_BIN/defaultPhpRepository library --symfony
 ```
 
 ## Run specific templates
 ```bash
-bin/defaultPhpRepository [project|library] [--symfony] --id ID_1 --id ID_2
+PATH_TO_BIN/initPhpRepository [project|library] [--symfony] --id ID_1 --id ID_2
 ```
 
 ## List
 ```bash
-bin/defaultPhpRepository [project|symfony-library] [--symfony] -l
+PATH_TO_BIN/initPhpRepository [project|symfony-library] [--symfony] -l
 ```
 
 ## Help
 ```bash
-bin/defaultPhpRepository -h
+PATH_TO_BIN/initPhpRepository -h
 ```
 
 ## Contributing
