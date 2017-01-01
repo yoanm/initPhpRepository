@@ -14,33 +14,36 @@ composer build
 # How to
 
 ## Initiliaze
-
-### Library
-Go to library repository folder an type : 
+Go to repository folder an type : 
+ * Library
 ```bash
-DEFAULT_PHP_REPOSITORY_PATH/bin/defaultPhpRepository init
+bin/defaultPhpRepository library
 ```
-
-#### Symfony
-In case the library is used in symfony invironment, type the following : 
-```bash
-DEFAULT_PHP_REPOSITORY_PATH/bin/defaultPhpRepository init symfony-library
-```
-
-### Project
+ * Project
 Go to project repository folder an type :
 ```bash
-DEFAULT_PHP_REPOSITORY_PATH/bin/defaultPhpRepository init project
+bin/defaultPhpRepository [project]
+```
+
+## Symfony
+In case the **library** is used in symfony invironment, type the following : 
+```bash
+bin/defaultPhpRepository library --symfony
 ```
 
 ## Run specific templates
-First, type the following command to list template ids :
 ```bash
-DEFAULT_PHP_REPOSITORY_PATH/bin/defaultPhpRepository init [project|symfony-library] --list
+bin/defaultPhpRepository [project|library] [--symfony] --id ID_1 --id ID_2
 ```
-When you have choosen template ids, type the following : 
+
+## List
 ```bash
-DEFAULT_PHP_REPOSITORY_PATH/bin/defaultPhpRepository init [project|symfony-library] --id ID_1 --id ID_2
+bin/defaultPhpRepository [project|symfony-library] [--symfony] -l
+```
+
+## Help
+```bash
+bin/defaultPhpRepository -h
 ```
 
 ## Contributing
