@@ -8,11 +8,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yoanm\DefaultPhpRepository\Factory\TemplateListFactory;
 use Yoanm\DefaultPhpRepository\Factory\VarFactory;
+use Yoanm\DefaultPhpRepository\Helper\CommandHelper;
 use Yoanm\DefaultPhpRepository\Helper\TemplateHelper;
-use Yoanm\DefaultPhpRepository\Model\Template;
-use Yoanm\DefaultPhpRepository\Processor\InitCommandProcessor;
-use Yoanm\DefaultPhpRepository\Processor\ListCommandProcessor;
-use Yoanm\DefaultPhpRepository\Resolver\NamespaceResolver;
+use Yoanm\DefaultPhpRepository\Processor\InitRepositoryProcessor;
+use Yoanm\DefaultPhpRepository\Processor\ListTemplatesProcessor;
 
 class InitCommand extends Command
 {
@@ -67,10 +66,7 @@ class InitCommand extends Command
             return 1;
         }
 
-        $templateList = (new TemplateListFactory())->create($repositoryType);
-        (new NamespaceResolver())->resolve($templateList, $repositoryType, $repositorySubType);
-
-        $this->getProcessor($input, $output, $templateList, $repositoryType)->process();
+        $this->getProcessor($input, $output, $repositoryType, $repositorySubType)->process();
     }
 
     /**
@@ -103,14 +99,14 @@ class InitCommand extends Command
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param Template[]      $templateList
      * @param string          $repositoryType
+     * @param string          $repositorySubType
      *
-     * @return InitCommandProcessor|ListCommandProcessor
+     * @return InitRepositoryProcessor|ListTemplatesProcessor
      *
      * @throws \Twig_Error_Loader
      */
-    protected function getProcessor(InputInterface $input, OutputInterface $output, array $templateList, $repositoryType)
+    protected function getProcessor(InputInterface $input, OutputInterface $output, $repositoryType, $repositorySubType)
     {
         $forceOverride = $input->getOption('force-override');
         $skipExisting = true === $forceOverride
@@ -118,18 +114,22 @@ class InitCommand extends Command
             : false === $input->getOption('ask-before-override')
         ;
 
+        $helper = new CommandHelper(
+            $input,
+            $output,
+            new TemplateHelper(
+                new \Twig_Environment(null, ['autoescape' => false]),
+                (new VarFactory())->create(RepositoryType::PROJECT === $repositoryType)
+            ),
+            $this->getHelper('question'),
+            (new TemplateListFactory())->create($repositoryType, $repositorySubType)
+        );
+
         if (true === $input->getOption('list')) {
-            $processor = new ListCommandProcessor($this->getHelper('question'), $input, $output, $templateList);
+            $processor = new ListTemplatesProcessor($helper);
         } else {
-            $processor = new InitCommandProcessor(
-                $this->getHelper('question'),
-                $input,
-                $output,
-                new TemplateHelper(
-                    new \Twig_Environment(null, ['autoescape' => false]),
-                    (new VarFactory())->create(RepositoryType::PROJECT === $repositoryType)
-                ),
-                $templateList,
+            $processor = new InitRepositoryProcessor(
+                $helper,
                 $skipExisting,
                 $forceOverride,
                 $input->getOption('id')

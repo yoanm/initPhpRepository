@@ -6,6 +6,7 @@ use Yoanm\DefaultPhpRepository\Command\RepositoryType;
 use Yoanm\DefaultPhpRepository\Helper\TemplateHelper;
 use Yoanm\DefaultPhpRepository\Model\FolderTemplate;
 use Yoanm\DefaultPhpRepository\Model\Template;
+use Yoanm\DefaultPhpRepository\Resolver\NamespaceResolver;
 
 /**
  * Class TemplateListFactory
@@ -14,54 +15,15 @@ class TemplateListFactory
 {
     /**
      * @param string $repositoryType
+     * @param string $repositorySubType
      *
      * @return Template[]
      */
-    public function create($repositoryType)
+    public function create($repositoryType, $repositorySubType)
     {
-        $fileTemplateList = [
-            'git.readme' => 'README.md.twig',
-            'git.license' => 'LICENSE.twig',
-            'git.contributing' => 'CONTRIBUTING.md.twig',
-            'git.gitignore' => '.gitignore.twig',
-            'composer.config' => 'composer.json.twig',
-            'phpcs.config' => 'phpcs.xml.dist.twig',
-            'phpunit.config' => 'phpunit.xml.dist.twig',
-            'behat.config' => 'behat.yml.twig',
-            'ci.scrutinizer' => '.scrutinizer.yml.twig',
-        ];
+        $templateList = $this->getTemplateList($repositoryType);
 
-        if (RepositoryType::LIBRARY === $repositoryType) {
-            $fileTemplateList['ci.travis'] = '.travis.yml.twig';
-        }
-
-        $list = [];
-        foreach ($fileTemplateList as $templateId => $templateName) {
-            $list[$templateId] = $this->createTemplate($templateId, $templateName);
-        }
-
-        $folderTemplateList = [
-            'phpunit.folders' => 'tests',
-            'behat.folders' => 'features',
-        ];
-
-        $basePath = TemplateHelper::getTemplateBasePath();
-        foreach ($folderTemplateList as $templateId => $templateFolder) {
-            $folderTemplate = $list[$templateId] = new FolderTemplate($templateId, $templateFolder);
-            // Iterate over files
-            $count = 0;
-            $path = realpath(sprintf('%s/base/%s', $basePath, $templateFolder));
-            $toRemove = sprintf('%s/base/', $basePath);
-            foreach ((new Finder())->files()->in($path) as $file) {
-                $folderTemplate->addFile(
-                    $this->createTemplate(
-                        sprintf('%s.%s', $templateId, $count),
-                        str_replace($toRemove, '', $file->getPathname())
-                    )
-                );
-                $count++;
-            }
-        }
+        (new NamespaceResolver())->resolve($templateList, $repositoryType, $repositorySubType);
 
         // Reorder final list
         $orderedList =  [
@@ -81,8 +43,8 @@ class TemplateListFactory
 
         $finalList = [];
         foreach ($orderedList as $key) {
-            if (isset($list[$key])) {
-                $finalList[$key] = $list[$key];
+            if (isset($templateList[$key])) {
+                $finalList[$key] = $templateList[$key];
             }
         }
 
@@ -109,5 +71,57 @@ class TemplateListFactory
     protected function getOutputFilePath($templateName)
     {
         return str_replace('.twig', '', $templateName);
+    }
+
+    /**
+     * @param $repositoryType
+     * @return array
+     */
+    protected function getTemplateList($repositoryType)
+    {
+        $fileTemplateList = [
+            'git.readme' => 'README.md.twig',
+            'git.license' => 'LICENSE.twig',
+            'git.contributing' => 'CONTRIBUTING.md.twig',
+            'git.gitignore' => '.gitignore.twig',
+            'composer.config' => 'composer.json.twig',
+            'phpcs.config' => 'phpcs.xml.dist.twig',
+            'phpunit.config' => 'phpunit.xml.dist.twig',
+            'behat.config' => 'behat.yml.twig',
+            'ci.scrutinizer' => '.scrutinizer.yml.twig',
+        ];
+
+        if (RepositoryType::LIBRARY === $repositoryType) {
+            $fileTemplateList['ci.travis'] = '.travis.yml.twig';
+        }
+
+        $templateList = [];
+        foreach ($fileTemplateList as $templateId => $templateName) {
+            $templateList[$templateId] = $this->createTemplate($templateId, $templateName);
+        }
+
+        $folderTemplateList = [
+            'phpunit.folders' => 'tests',
+            'behat.folders' => 'features',
+        ];
+
+        $basePath = TemplateHelper::getTemplateBasePath();
+        foreach ($folderTemplateList as $templateId => $templateFolder) {
+            $folderTemplate = $templateList[$templateId] = new FolderTemplate($templateId, $templateFolder);
+            // Iterate over files
+            $count = 0;
+            $path = realpath(sprintf('%s/base/%s', $basePath, $templateFolder));
+            $toRemove = sprintf('%s/base/', $basePath);
+            foreach ((new Finder())->files()->in($path) as $file) {
+                $folderTemplate->addFile(
+                    $this->createTemplate(
+                        sprintf('%s.%s', $templateId, $count),
+                        str_replace($toRemove, '', $file->getPathname())
+                    )
+                );
+                $count++;
+            }
+        }
+        return $templateList;
     }
 }

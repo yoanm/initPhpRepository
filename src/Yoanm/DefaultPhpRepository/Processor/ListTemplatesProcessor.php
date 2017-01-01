@@ -1,22 +1,34 @@
 <?php
 namespace Yoanm\DefaultPhpRepository\Processor;
 
+use Yoanm\DefaultPhpRepository\Helper\CommandHelper;
 use Yoanm\DefaultPhpRepository\Model\FolderTemplate;
 use Yoanm\DefaultPhpRepository\Model\Template;
 use Yoanm\DefaultPhpRepository\Resolver\NamespaceResolver;
 
 /**
- * Class ListCommandProcessor
+ * Class ListTemplatesProcessor
  */
-class ListCommandProcessor extends CommandProcessor
+class ListTemplatesProcessor
 {
+    /** @var CommandHelper */
+    private $helper;
+
+    /**
+     * @param CommandHelper $helper
+     */
+    public function __construct(CommandHelper $helper)
+    {
+        $this->helper = $helper;
+    }
+
     public function process()
     {
         $currentType = null;
-        foreach ($this->getTemplateList() as $template) {
-            $this->displayHeader($template, $currentType);
+        foreach ($this->helper->getTemplateList() as $template) {
+            $this->helper->displayHeader($template, $currentType);
 
-            $currentType = $this->resolveCurrentType($template);
+            $currentType = $this->helper->resolveCurrentType($template);
 
             if ($template instanceof FolderTemplate) {
                 $this->displayFolderTitle($template);
@@ -33,7 +45,7 @@ class ListCommandProcessor extends CommandProcessor
      */
     protected function displayTemplateInfo(Template $template)
     {
-        $this->display(sprintf(
+        $this->helper->display(sprintf(
             ' - %s/%s',
             $this->resolveTemplatePath($template),
             $template->getSource()
@@ -45,7 +57,7 @@ class ListCommandProcessor extends CommandProcessor
      */
     protected function displayFolderTitle(Template $template)
     {
-        $this->display(
+        $this->helper->display(
             sprintf('<comment>%s : </comment><info>Folder</info>', $template->getId()),
             2,
             false
@@ -57,7 +69,7 @@ class ListCommandProcessor extends CommandProcessor
      */
     protected function displayFileTitle(Template $template)
     {
-        $this->display(
+        $this->helper->display(
             sprintf('<comment>%s : </comment><info>File</info>', $template->getId()),
             2,
             false
@@ -67,12 +79,13 @@ class ListCommandProcessor extends CommandProcessor
     protected function resolveTemplatePath(Template $template)
     {
         $basePath = 'templates';
+        $path = sprintf('%s/base', $basePath);
         if (NamespaceResolver::SYMFONY_LIBRARY_NAMESPACE === $template->getNamespace()) {
-            return sprintf('%s/override/library/symfony', $basePath);
+            $path = sprintf('%s/override/library/symfony', $basePath);
         } elseif (NamespaceResolver::LIBRARY_NAMESPACE === $template->getNamespace()) {
-            sprintf('%s/override/library/php', $basePath);
+            $path = sprintf('%s/override/library/php', $basePath);
         }
 
-        return sprintf('%s/base', $basePath);
+        return $path;
     }
 }

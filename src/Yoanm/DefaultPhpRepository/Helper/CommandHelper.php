@@ -1,5 +1,5 @@
 <?php
-namespace Yoanm\DefaultPhpRepository\Processor;
+namespace Yoanm\DefaultPhpRepository\Helper;
 
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -8,9 +8,9 @@ use Symfony\Component\Console\Question\Question;
 use Yoanm\DefaultPhpRepository\Model\Template;
 
 /**
- * Class CommandProcessor
+ * Class CommandHelper
  */
-class CommandProcessor
+class CommandHelper
 {
     const OUTPUT_LEVEL_SPACE = '    ';
 
@@ -20,24 +20,31 @@ class CommandProcessor
     private $output;
     /** @var QuestionHelper */
     private $questionHelper;
+    /** @var TemplateHelper */
+    private $templateHelper;
     /** @var Template[] */
     private $templateList;
 
     /**
-     * @param QuestionHelper  $questionHelper
      * @param InputInterface  $input
      * @param OutputInterface $output
+     * @param TemplateHelper  $templateHelper
+     * @param QuestionHelper  $questionHelper
      * @param Template[]      $templateList
      */
     public function __construct(
-        QuestionHelper $questionHelper,
         InputInterface $input,
         OutputInterface $output,
+        TemplateHelper $templateHelper,
+        QuestionHelper $questionHelper,
         array $templateList
     ) {
         $this->input = $input;
         $this->output = $output;
+
         $this->questionHelper = $questionHelper;
+        $this->templateHelper = $templateHelper;
+
         $this->templateList = $templateList;
     }
 
@@ -106,5 +113,17 @@ class CommandProcessor
     public function ask(Question $question)
     {
         return $this->questionHelper->ask($this->input, $this->output, $question);
+    }
+
+    /**
+     * @param Template $template
+     */
+    public function dump(Template $template)
+    {
+        $templateId = $template->getSource();
+        if (null !== $template->getNamespace()) {
+            $templateId = sprintf('@%s/%s', $template->getNamespace(), $template->getSource());
+        }
+        $this->templateHelper->dump($templateId, $this->resolveTargetPath($template));
     }
 }

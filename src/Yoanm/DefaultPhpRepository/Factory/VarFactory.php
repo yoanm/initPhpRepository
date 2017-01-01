@@ -3,7 +3,6 @@ namespace Yoanm\DefaultPhpRepository\Factory;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Yoanm\DefaultPhpRepository\Command\Mode;
 use Yoanm\DefaultPhpRepository\Command\RepositoryType;
 
 /**

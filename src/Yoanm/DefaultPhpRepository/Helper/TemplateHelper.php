@@ -2,7 +2,6 @@
 namespace Yoanm\DefaultPhpRepository\Helper;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Yoanm\DefaultPhpRepository\Registry\TemplateRegistry;
 use Yoanm\DefaultPhpRepository\Resolver\NamespaceResolver;
 
 /**
@@ -33,7 +32,7 @@ class TemplateHelper
      * @param string $template
      * @param string $outputFilePath
      */
-    public function dumpTemplate($template, $outputFilePath)
+    public function dump($template, $outputFilePath)
     {
         $this->fileSystem->dumpFile(
             $outputFilePath,
