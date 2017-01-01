@@ -47,23 +47,20 @@ class InitRepositoryProcessor
                 continue;
             }
             $this->helper->displayHeader($template, $currentType);
-
-            $currentType = $this->helper->resolveCurrentType($template);
-
             $this->displayTemplate($template);
 
             if ($template instanceof FolderTemplate) {
-                $targetExist = $this->processFolder($template);
+                $this->processFolder($template);
             } else {
-                $targetExist = $this->processFile($template);
+                $this->processFile($template);
             }
+
+            $currentType = $this->helper->resolveCurrentType($template);
         }
     }
 
     /**
      * @param FolderTemplate $template
-     *
-     * @return bool
      */
     protected function processFolder(FolderTemplate $template)
     {
@@ -91,7 +88,6 @@ class InitRepositoryProcessor
 
     /**
      * @param Template $template
-     * @return bool
      */
     protected function processFile(Template $template)
     {
