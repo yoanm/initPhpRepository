@@ -65,23 +65,28 @@ class TemplateListFactory
 
         // Reorder final list
         $orderedList =  [
-            'git.readme' => $list['git.readme'],
-            'git.license' => $list['git.license'],
-            'git.contributing' => $list['git.contributing'],
-            'git.gitignore' => $list['git.gitignore'],
-            'composer.config' => $list['composer.config'],
-            'phpcs.config' => $list['phpcs.config'],
-            'phpunit.config' => $list['phpunit.config'],
-            'phpunit.folders' => $list['phpunit.folders'],
-            'behat.config' => $list['behat.config'],
-            'behat.folders' => $list['behat.folders'],
-            'ci.scrutinizer' => $list['ci.scrutinizer'],
+            'git.readme',
+            'git.license',
+            'git.contributing',
+            'git.gitignore',
+            'composer.config',
+            'phpcs.config',
+            'phpunit.config',
+            'phpunit.folders',
+            'behat.config',
+            'behat.folders',
+            'ci.scrutinizer',
+            'ci.travis',
         ];
-        if (RepositoryType::LIBRARY === $repositoryType) {
-            $orderedList['ci.travis'] = $list['ci.travis'];
+
+        $finalList = [];
+        foreach ($orderedList as $key) {
+            if (isset($list[$key])) {
+                $finalList[$key] = $list[$key];
+            }
         }
 
-        return $orderedList;
+        return $finalList;
     }
 
     /**
