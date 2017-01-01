@@ -1,12 +1,12 @@
 <?php
-namespace Yoanm\DefaultPhpRepository\Helper;
+namespace Yoanm\InitPhpRepository\Helper;
 
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Filesystem;
-use Yoanm\DefaultPhpRepository\Model\Template;
+use Yoanm\InitPhpRepository\Model\Template;
 
 /**
  * Class CommandHelper

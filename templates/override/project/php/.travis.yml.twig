@@ -1,8 +1,4 @@
-{% extends '.scrutinizer.yml.twig' %}
-{% block test %}
-{{ parent() }}
-            - composer behat
-{% endblock test %}
+{% extends '.travis.yml.twig' %}
 
 {#
 As a project include a composer.lock file ci could keep a vendor folder cache
@@ -12,6 +8,6 @@ As a library should not include a composer.lock, it's not a good idea to cache v
         => You could have unexpected behavior on ci
         => Ci will always rely on lowest versions, while do not caching vendor file will produce the inverse (always using newest version)
 #}
-{% block cache_directories %}
-{{ parent() }}            - vendor
-{% endblock cache_directories %}
+{% block cache_directory %}
+{{ parent() }}    - vendor
+{% endblock cache_directory %}

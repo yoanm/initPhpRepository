@@ -1,5 +1,5 @@
 <?php
-namespace Yoanm\DefaultPhpRepository\Helper;
+namespace Yoanm\InitPhpRepository\Helper;
 
 /**
  * Class PathHelper
