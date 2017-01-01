@@ -69,6 +69,10 @@ class TemplateHelper
             sprintf('%s/%s', self::getTemplateBasePath(), '/override/library/symfony'),
             NamespaceResolver::SYMFONY_LIBRARY_NAMESPACE
         );
+        $loader->addPath(
+            sprintf('%s/%s', self::getTemplateBasePath(), '/override/project/php'),
+            NamespaceResolver::PROJECT_NAMESPACE
+        );
 
         // define variable as global
         $twigVarList = [];

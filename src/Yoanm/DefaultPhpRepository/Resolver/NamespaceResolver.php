@@ -12,6 +12,7 @@ class NamespaceResolver
 {
     /** Repository type namespaces */
     const LIBRARY_NAMESPACE = 'library';
+    const PROJECT_NAMESPACE = 'project';
 
     /** Repository sub type namespaces */
     const SYMFONY_LIBRARY_NAMESPACE = 'symfony-library';
@@ -23,20 +24,36 @@ class NamespaceResolver
      */
     public function resolve(array $templateList, $repositoryType, $repositorySubType)
     {
+        $namespace = RepositoryType::LIBRARY === $repositoryType
+            ? self::LIBRARY_NAMESPACE
+            : self::PROJECT_NAMESPACE
+        ;
         // Override base namespace for specific files
         if (RepositoryType::LIBRARY === $repositoryType) {
-            $namespace = self::LIBRARY_NAMESPACE;
-
-            $templateList['composer.config']->setNamespace($namespace);
-            $templateList['git.gitignore']->setNamespace($namespace);
-            $templateList['git.readme']->setNamespace($namespace);
+            $this->setNamespace($templateList, 'composer.config', $namespace);
+            $this->setNamespace($templateList, 'git.gitignore', $namespace);
+            $this->setNamespace($templateList, 'git.readme', $namespace);
 
             // Override with sub type
             if (RepositorySubType::SYMFONY === $repositorySubType) {
                 $subNamespace = self::SYMFONY_LIBRARY_NAMESPACE;
-                $templateList['ci.travis']->setNamespace($subNamespace);
-                $templateList['git.readme']->setNamespace($subNamespace);
+                $this->setNamespace($templateList, 'ci.travis', $subNamespace);
+                $this->setNamespace($templateList, 'git.readme', $subNamespace);
             }
+        } else {
+            $this->setNamespace($templateList, 'ci.scrutinizer', $namespace);
+        }
+    }
+
+    /**
+     * @param Template[] $templateList
+     * @param string     $key
+     * @param string     $namespace
+     */
+    protected function setNamespace(array $templateList, $key, $namespace)
+    {
+        if (isset($templateList[$key])) {
+            $templateList[$key]->setNamespace($namespace);
         }
     }
 }
