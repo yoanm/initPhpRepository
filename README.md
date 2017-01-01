@@ -46,5 +46,5 @@ PATH_TO_BIN/initPhpRepository [project|symfony-library] [--symfony] -l
 PATH_TO_BIN/initPhpRepository -h
 ```
 
-## Contributing
+# Contributing
 See [contributing note](./CONTRIBUTING.md)
