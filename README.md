@@ -33,12 +33,23 @@ PATH_TO_BIN/initPhpRepository library --symfony
 
 ## Run specific templates
 ```bash
-PATH_TO_BIN/initPhpRepository [project|library] [--symfony] --id ID_1 --id ID_2
+PATH_TO_BIN/initPhpRepository --id ID_1 --id ID_2
 ```
 
 ## List
 ```bash
-PATH_TO_BIN/initPhpRepository [project|symfony-library] [--symfony] -l
+PATH_TO_BIN/initPhpRepository -l
+```
+
+## Existing file override
+### Override all
+```bash
+PATH_TO_BIN/initPhpRepository -f
+```
+
+### Ask before overriding
+```bash
+PATH_TO_BIN/initPhpRepository --ask-before-override
 ```
 
 ## Help
