@@ -28,7 +28,7 @@ PATH_TO_BIN/initPhpRepository [project]
 ## Symfony
 In case the **library** is used in symfony invironment, type the following : 
 ```bash
-PATH_TO_BIN/defaultPhpRepository library --symfony
+PATH_TO_BIN/initPhpRepository library --symfony
 ```
 
 ## Run specific templates
