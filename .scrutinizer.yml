@@ -28,14 +28,15 @@ build:
         redis: false
     tests:
         override:
-            -
-                command: composer cs
+            - composer cs
             -
                 command: composer coverage-clover
                 idle_timeout: 1200
                 coverage:
                     file: 'build/coverage/clover.xml'
                     format: 'php-clover'
+
+            - composer behat
 
 tools:
     php_analyzer:
