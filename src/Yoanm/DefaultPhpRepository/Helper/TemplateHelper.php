@@ -2,86 +2,102 @@
 namespace Yoanm\DefaultPhpRepository\Helper;
 
 use Symfony\Component\Filesystem\Filesystem;
+use Yoanm\DefaultPhpRepository\Resolver\NamespaceResolver;
 
 /**
  * Class TemplateFileProcessor
  */
 class TemplateHelper
 {
-    /** @var array */
-    private $variableList = [];
-    /** @var string[] */
-    private $variableNameList = [];
-    /** @var string */
-    private $filenameResolverRegexp;
+    /** @var \Twig_Environment */
+    private $twig;
     /** @var Filesystem */
-    private $fs;
+    private $fileSystem;
+    /** @var string */
+    private static $templateBasePath = null;
 
     /**
-     * @param array $variableList
-     * @param array $extraTemplatePath
+     * @param \Twig_Environment $twig
+     * @param array             $varList
      */
-    public function __construct(array $variableList, array $extraTemplatePath = [])
+    public function __construct(\Twig_Environment $twig, array $varList)
     {
-        $this->variableList = $variableList;
-        foreach ($this->variableList as $variableId => $variableValue) {
-            $variableId = sprintf('%%%s%%', $variableId);
-            $this->variableNameList[$variableId] = $variableId;
-        }
+        $this->twig = $twig;
+        $this->fileSystem = new Filesystem();
 
-        foreach ($extraTemplatePath as $extraKey => $extraValue) {
-            $variableId = sprintf('%%%s%%', $extraKey);
-            $this->variableNameList[$variableId] = $variableId;
-            $this->variableList[$variableId] = $this->loadTemplate($extraValue);
-        }
-
-        // compile this regexp at startup (no need to to it each time)
-        $this->filenameResolverRegexp = '#/?(?:[^/]+/)*([^/]+)\.tmpl$#';
-
-        $this->fs = new Filesystem();
+        $this->initTwig($varList);
     }
 
     /**
-     * @param string $templateFilePath
+     * @param string $template
      * @param string $outputFilePath
      */
-    public function dumpTemplate($templateFilePath, $outputFilePath)
+    public function dump($template, $outputFilePath)
     {
-        $this->fs->dumpFile($outputFilePath, $this->loadTemplate($templateFilePath));
-    }
-
-    /**
-     * @param string $templateFilePath
-     * @param string $outputDir
-     *
-     * @return string
-     */
-    public function resolveOutputFilePath($templateFilePath, $outputDir)
-    {
-        return sprintf(
-            '%s%s',
-            PathHelper::appendPathSeparator($outputDir),
-            $this->resolveOutputFilename($templateFilePath)
+        $this->fileSystem->dumpFile(
+            $outputFilePath,
+            $this->twig->render($template)
         );
     }
 
-    /**
-     * @param string $templateFilePath
-     *
-     * @return string
-     */
-    public function resolveOutputFilename($templateFilePath)
+    public static function getTemplateBasePath()
     {
-        return preg_replace($this->filenameResolverRegexp, '\1', $templateFilePath);
+        if (null === self::$templateBasePath) {
+            self::$templateBasePath = realpath(sprintf('%s/../../../../templates', __DIR__));
+        }
+        return self::$templateBasePath;
     }
 
     /**
-     * @param string $templateFilePath
+     * @param array $varList
      *
-     * @return string file content
+     * @throws \Twig_Error_Loader
      */
-    public function loadTemplate($templateFilePath)
+    private function initTwig(array $varList)
     {
-        return str_replace($this->variableNameList, $this->variableList, file_get_contents($templateFilePath));
+        $loader = new \Twig_Loader_Filesystem();
+        $this->twig->setLoader($loader);
+
+        // Set template namespaces
+        $loader->addPath(sprintf('%s/%s', self::getTemplateBasePath(), 'base'));
+        $loader->addPath(
+            sprintf('%s/%s', self::getTemplateBasePath(), '/override/library/php'),
+            NamespaceResolver::LIBRARY_NAMESPACE
+        );
+        $loader->addPath(
+            sprintf('%s/%s', self::getTemplateBasePath(), '/override/library/symfony'),
+            NamespaceResolver::SYMFONY_LIBRARY_NAMESPACE
+        );
+        $loader->addPath(
+            sprintf('%s/%s', self::getTemplateBasePath(), '/override/project/php'),
+            NamespaceResolver::PROJECT_NAMESPACE
+        );
+
+        // define variable as global
+        $twigVarList = [];
+        // merge keys as array
+        foreach ($varList as $varName => $varValue) {
+            $twigVarList = array_merge_recursive($twigVarList, $this->resolveVar($varName, $varValue));
+        }
+        foreach ($twigVarList as $key => $val) {
+            $this->twig->addGlobal($key, $val);
+        }
+    }
+
+    /**
+     * @param string $varName
+     * @param string $varValue
+     *
+     * @return array
+     */
+    protected function resolveVar($varName, $varValue)
+    {
+        $componentList = explode('.', $varName);
+        if (count($componentList) > 1) {
+            $varName = array_shift($componentList);
+            $varValue = $this->resolveVar(implode('.', $componentList), $varValue);
+        }
+
+        return [$varName => $varValue];
     }
 }

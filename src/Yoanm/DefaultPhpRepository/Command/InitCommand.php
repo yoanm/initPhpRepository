@@ -6,21 +6,15 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Yoanm\DefaultPhpRepository\Command\Helper\CommandTemplateHelper;
-use Yoanm\DefaultPhpRepository\Command\Processor\CommandTemplateProcessor;
-use Yoanm\DefaultPhpRepository\Factory\TemplatePathBagFactory;
-use Yoanm\DefaultPhpRepository\Factory\VariableBagFactory;
+use Yoanm\DefaultPhpRepository\Factory\TemplateListFactory;
+use Yoanm\DefaultPhpRepository\Factory\VarFactory;
+use Yoanm\DefaultPhpRepository\Helper\CommandHelper;
+use Yoanm\DefaultPhpRepository\Helper\TemplateHelper;
+use Yoanm\DefaultPhpRepository\Processor\InitRepositoryProcessor;
+use Yoanm\DefaultPhpRepository\Processor\ListTemplatesProcessor;
 
 class InitCommand extends Command
 {
-    const TYPE_INIT = 'template.init';
-    const TYPE_GIT = 'template.git';
-    const TYPE_COMPOSER = 'template.composer';
-    const TYPE_TEST = 'template.test';
-    const TYPE_CI = 'template.ci';
-
-    const OUTPUT_LEVEL_SPACE = '    ';
-
     /**
      * {@inheritdoc}
      */
@@ -31,15 +25,21 @@ class InitCommand extends Command
             ->addArgument(
                 'type',
                 InputArgument::OPTIONAL,
-                'type of repository (library/symfony/project)',
-                Mode::PHP_LIBRARY
+                'Repository type (library/project)',
+                RepositoryType::PROJECT
             )
-            ->addOption('list', 'l', InputOption::VALUE_NONE, 'List template file instead of creation them')
+            ->addOption(
+                'symfony',
+                null,
+                InputOption::VALUE_NONE,
+                'If symfony sub type'
+            )
+            ->addOption('list', 'l', InputOption::VALUE_NONE, 'List template ids')
             ->addOption(
                 'id',
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'process only given ids'
+                'process only given templates ids'
             )
             ->addOption(
                 'ask-before-override',
@@ -56,104 +56,86 @@ class InitCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $mode = $input->getArgument('type');
+        $repositoryType = $input->getArgument('type');
+        $repositorySubType = true === $input->getOption('symfony')
+            ? RepositorySubType::SYMFONY
+            : RepositorySubType::PHP
+        ;
 
-        if (!$this->modeIsValid($output, $mode)) {
+        if (!$this->validateRepositoryType($output, $repositoryType)) {
             return 1;
         }
 
-        $skipExistingFile = false === $input->getOption('ask-before-override');
-        $forceOverride = $input->getOption('force-override');
-        if (true === $forceOverride) {
-            $skipExistingFile = false;
-        }
-
-        $variableBag = (new VariableBagFactory())->load($mode);
-        $templatePathList = (new TemplatePathBagFactory())->load($mode);
-
-        $commandTemplateHelper = new CommandTemplateHelper(
-            $this->getHelper('question'),
-            $input,
-            $output,
-            $variableBag->all(),
-            $skipExistingFile,
-            $forceOverride
-        );
-        $commandProcessor = new CommandTemplateProcessor($commandTemplateHelper);
-
-        $output->writeln(sprintf('<comment>Creating default files for : </comment><info>%s</info>', ucwords($mode)));
-        if (true === $forceOverride) {
-            $output->writeln('<fg=red>WARNING :  Existing files will be overriden by default</fg=red>');
-        } elseif (true === $skipExistingFile) {
-            $output->writeln('<comment>INFO : Existing files will be skipped !</comment>');
-        }
-        try {
-            $currentType = null;
-            foreach ($templatePathList as $templateKey => $templatePath) {
-                if (count($input->getOption('id')) && !in_array($templateKey, $input->getOption('id'))) {
-                    continue;
-                }
-
-                if (null === $currentType || !preg_match(sprintf('#%s#', preg_quote($currentType)), $templateKey)) {
-                    preg_match('#(template\.[^\.]+)#', $templateKey, $matches);
-                    $currentType = isset($matches[1]) ? $matches[1] : $templateKey;
-                    $header = ucwords(str_replace('template.', '', $currentType));
-                    if ('Init' === $header) {
-                        $header = 'Init repository';
-                    } elseif ('Ci' === $header) {
-                        $header = 'Continuous integration';
-                    }
-                    $output->writeln(sprintf('<info>%s%s</info>', self::OUTPUT_LEVEL_SPACE, $header));
-                }
-
-                $output->writeln(sprintf(
-                    '%s* %s : ',
-                    str_repeat(self::OUTPUT_LEVEL_SPACE, 2),
-                    ucwords(str_replace('template.', '', str_replace($currentType.'.', '', $templateKey)))
-                ));
-                if (true === $input->getOption('list')) {
-                    $output->writeln(sprintf(
-                        '%s<comment>Id   : </comment><info>%s</info>',
-                        str_repeat(self::OUTPUT_LEVEL_SPACE, 3),
-                        $templateKey
-                    ));
-                    $output->writeln(sprintf(
-                        '%s<comment>File : </comment><info>%s</info>',
-                        str_repeat(self::OUTPUT_LEVEL_SPACE, 3),
-                        $templatePath
-                    ));
-                } else {
-                    $commandProcessor->process($templatePath);
-                }
-            }
-            return 0;
-        } catch (\Exception $e) {
-            $output->writeln(sprintf('<error>Error -> %s</error>', $e->getMessage()));
-            throw $e;
-        }
+        $this->getProcessor($input, $output, $repositoryType, $repositorySubType)->process();
     }
 
-    protected function modeIsValid(OutputInterface $output, $mode)
+    /**
+     * @param OutputInterface $output
+     * @param string          $repositoryType
+     *
+     * @return bool
+     */
+    protected function validateRepositoryType(OutputInterface $output, $repositoryType)
     {
-        $availableModeList = Mode::all();
-        if (!in_array($mode, $availableModeList)) {
-            $output->writeln(sprintf('<error>Unexpected mode "%s" !</error>', $mode));
+        $availableTypeList = RepositoryType::all();
+        if (!in_array($repositoryType, $availableTypeList)) {
+            $output->writeln(sprintf('<error>Unexpected type "%s" !</error>', $repositoryType));
             $output->writeln(sprintf(
-                '<info>Allowed mode : %s </info>',
-                implode(
-                    ' / ',
-                    array_map(
-                        function ($availableMode) {
-                            return sprintf('<comment>%s</comment>', $availableMode);
-                        },
-                        $availableModeList
-                    )
-                )
+                '<info>Allowed type : %s </info>',
+                implode(' / ', array_map(
+                    function ($availableMode) {
+                        return sprintf('<comment>%s</comment>', $availableMode);
+                    },
+                    $availableTypeList
+                ))
             ));
 
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @param string          $repositoryType
+     * @param string          $repositorySubType
+     *
+     * @return InitRepositoryProcessor|ListTemplatesProcessor
+     *
+     * @throws \Twig_Error_Loader
+     */
+    protected function getProcessor(InputInterface $input, OutputInterface $output, $repositoryType, $repositorySubType)
+    {
+        $forceOverride = $input->getOption('force-override');
+        $skipExisting = true === $forceOverride
+            ? false
+            : false === $input->getOption('ask-before-override')
+        ;
+
+        $helper = new CommandHelper(
+            $input,
+            $output,
+            new TemplateHelper(
+                new \Twig_Environment(null, ['autoescape' => false]),
+                (new VarFactory())->create(RepositoryType::PROJECT === $repositoryType)
+            ),
+            $this->getHelper('question'),
+            (new TemplateListFactory())->create($repositoryType, $repositorySubType)
+        );
+
+        if (true === $input->getOption('list')) {
+            $processor = new ListTemplatesProcessor($helper);
+        } else {
+            $processor = new InitRepositoryProcessor(
+                $helper,
+                $skipExisting,
+                $forceOverride,
+                $input->getOption('id')
+            );
+        }
+
+        return $processor;
     }
 }

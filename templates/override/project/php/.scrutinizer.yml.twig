@@ -1,0 +1,5 @@
+{% extends '.scrutinizer.yml.twig' %}
+{% block test %}
+{{ parent() }}
+            - composer behat
+{% endblock test %}
