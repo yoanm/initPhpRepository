@@ -12,11 +12,13 @@ sudo: false
 matrix:
   fast_finish: true
 
-{% block install %}
-install:
+{% block before_install %}
+before_install:
   - composer global require hirak/prestissimo
+{% endblock before_install %}
+
+install:
   - composer build-ci
-{% endblock install %}
 
 script:
   - composer test

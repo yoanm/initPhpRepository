@@ -8,6 +8,6 @@ env:
 
 {% endblock env %}
 
-{% block install %}
-{{ parent() }}  - composer require "symfony/symfony:${SYMFONY_VERSION}"
-{% endblock install %}
+{% block before_install %}
+{{ parent() }}  - composer require "symfony/symfony:${SYMFONY_VERSION}" --update-with-dependencies
+{% endblock before_install %}

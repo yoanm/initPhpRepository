@@ -17,9 +17,11 @@ build:
         directories:
             - vendor
             - ~/.composer
+
     dependencies:
-        override:
+        before:
             - composer global require hirak/prestissimo
+        override:
             - composer build-ci
 
     environment:
@@ -28,6 +30,7 @@ build:
         elasticsearch: false
         redis: false
 {% block env_var %}{% endblock env_var %}
+
     tests:
         override:
 {% block test %}
