@@ -138,7 +138,7 @@ class CommandHelper
     }
 
     /**
-     * @param Template $emplate
+     * @param Template $template
      *
      * @return bool
      */
