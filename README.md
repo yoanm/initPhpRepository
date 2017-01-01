@@ -4,7 +4,7 @@
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/yoanm/default-php-repository.svg)](https://packagist.org/packages/yoanm/default-php-repository)
 
-### Installation
+# Install
 ```bash
 git clone git@github.com:yoanm/defaultPhpRepository.git
 cd defaultPhpRepository
