@@ -53,41 +53,57 @@ class InitRepositoryProcessor
             $this->displayTemplate($template);
 
             if ($template instanceof FolderTemplate) {
-                $targetExist = false;
-                $process = false;
-
-                foreach ($template->getFileList() as $subTemplate) {
-                    $targetExist = $this->helper->targetExist($subTemplate);
-                    $process = $this->processOrNot($targetExist);
-                    if (false === $process) {
-                        break;
-                    }
-                }
-
-                if (true === $process) {
-                    foreach ($template->getFileList() as $subTemplate) {
-                        $this->helper->dump($subTemplate);
-                    }
-                }
+                $targetExist = $this->processFolder($template);
             } else {
-                $targetExist = $this->helper->targetExist($template);
-                if (true === $this->processOrNot($targetExist)) {
-                    $this->helper->dump($template);
-                }
-            }
-            if (false === $targetExist) {
-                $this->helper->display('<info>Done</info>');
+                $targetExist = $this->processFile($template);
             }
         }
     }
 
     /**
-     * @param Template $template
+     * @param FolderTemplate $template
+     *
+     * @return bool
      */
-    protected function displayTemplate(Template $template)
+    protected function processFolder(FolderTemplate $template)
     {
-        $this->helper->display(sprintf('<comment>%s</comment>', $template->getId()), 2, false);
-        $this->helper->display(sprintf(' - <info>./%s</info> : ', $template->getTarget()), 0, false);
+        $targetExist = false;
+        $process = false;
+
+        foreach ($template->getFileList() as $subTemplate) {
+            $targetExist = $this->helper->targetExist($subTemplate);
+            $process = $this->processOrNot($targetExist);
+            if (false === $process) {
+                break;
+            }
+        }
+
+        if (true === $process) {
+            foreach ($template->getFileList() as $subTemplate) {
+                $this->helper->dump($subTemplate);
+            }
+        }
+
+        if (false === $targetExist) {
+            $this->helper->display('<info>Done</info>');
+        }
+    }
+
+    /**
+     * @param Template $template
+     * @return bool
+     */
+    protected function processFile(Template $template)
+    {
+        $targetExist = $this->helper->targetExist($template);
+
+        if (true === $this->processOrNot($targetExist)) {
+            $this->helper->dump($template);
+        }
+
+        if (false === $targetExist) {
+            $this->helper->display('<info>Done</info>');
+        }
     }
 
     /**
@@ -115,5 +131,14 @@ class InitRepositoryProcessor
         }
 
         return $process;
+    }
+
+    /**
+     * @param Template $template
+     */
+    protected function displayTemplate(Template $template)
+    {
+        $this->helper->display(sprintf('<comment>%s</comment>', $template->getId()), 2, false);
+        $this->helper->display(sprintf(' - <info>./%s</info> : ', $template->getTarget()), 0, false);
     }
 }
