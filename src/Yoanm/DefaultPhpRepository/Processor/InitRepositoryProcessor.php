@@ -2,7 +2,6 @@
 namespace Yoanm\DefaultPhpRepository\Processor;
 
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Symfony\Component\Filesystem\Filesystem;
 use Yoanm\DefaultPhpRepository\Helper\CommandHelper;
 use Yoanm\DefaultPhpRepository\Model\FolderTemplate;
 use Yoanm\DefaultPhpRepository\Model\Template;
@@ -14,10 +13,6 @@ class InitRepositoryProcessor
 {
     /** @var CommandHelper */
     private $helper;
-    /** @var Filesystem */
-    private $fileSystem;
-    /** @var string */
-    private $rootPath;
     /** @var bool */
     private $skipExisting;
     /** @var bool */
@@ -30,19 +25,14 @@ class InitRepositoryProcessor
      * @param bool          $skipExisting
      * @param bool          $forceOverride
      * @param array         $idList
-     * @param string        $rootPath
      */
     public function __construct(
         CommandHelper $helper,
         $skipExisting = true,
         $forceOverride = false,
-        $idList = [],
-        $rootPath = '.'
+        $idList = []
     ) {
         $this->helper = $helper;
-
-        $this->rootPath = realpath($rootPath);
-        $this->fileSystem = new Filesystem();
 
         $this->skipExisting = $skipExisting;
         $this->forceOverride = $forceOverride;
@@ -61,29 +51,32 @@ class InitRepositoryProcessor
             $currentType = $this->helper->resolveCurrentType($template);
 
             $this->displayTemplate($template);
-            $fileExist = false;
-            if ($template instanceof FolderTemplate) {
-                $process = false;
-                foreach ($template->getFileList() as $subTemplate) {
-                    list($fileExist, $process) = $this->checkBeforeDump($subTemplate);
 
+            if ($template instanceof FolderTemplate) {
+
+                $targetExist = false;
+                $process = false;
+
+                foreach ($template->getFileList() as $subTemplate) {
+                    $targetExist = $this->helper->targetExist($subTemplate);
+                    $process = $this->processOrNot($targetExist);
                     if (false === $process) {
                         break;
                     }
                 }
+
                 if (true === $process) {
                     foreach ($template->getFileList() as $subTemplate) {
                         $this->helper->dump($subTemplate);
                     }
                 }
             } else {
-                list($fileExist, $process) = $this->checkBeforeDump($template);
-
-                if (true === $process) {
+                $targetExist = $this->helper->targetExist($template);
+                if (true === $this->processOrNot($targetExist)) {
                     $this->helper->dump($template);
                 }
             }
-            if (false === $fileExist) {
+            if (false === $targetExist) {
                 $this->helper->display('<info>Done</info>');
             }
         }
@@ -100,14 +93,14 @@ class InitRepositoryProcessor
 
     /**
      * @param Template $template
+     * @param bool     $targetExist
      *
-     * @return array
+     * @return bool
      */
-    protected function checkBeforeDump(Template $template)
+    protected function processOrNot($targetExist)
     {
-        $fileExist = $this->fileSystem->exists($this->resolveTargetPath($template));
         $process = true;
-        if ($fileExist) {
+        if ($targetExist) {
             if (false === $this->forceOverride && true === $this->skipExisting) {
                 $this->helper->display('<comment>Skipped !</comment>');
                 $process = false;
@@ -126,16 +119,6 @@ class InitRepositoryProcessor
             }
         }
 
-        return [$fileExist, $process];
-    }
-
-    /**
-     * @param Template $template
-     *
-     * @return string
-     */
-    protected function resolveTargetPath(Template $template)
-    {
-        return sprintf('%s/%s', $this->rootPath, $template->getTarget());
+        return $process;
     }
 }

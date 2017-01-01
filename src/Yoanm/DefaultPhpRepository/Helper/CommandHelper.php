@@ -5,6 +5,7 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Filesystem\Filesystem;
 use Yoanm\DefaultPhpRepository\Model\Template;
 
 /**
@@ -22,8 +23,12 @@ class CommandHelper
     private $questionHelper;
     /** @var TemplateHelper */
     private $templateHelper;
+    /** @var Filesystem */
+    private $fileSystem;
     /** @var Template[] */
     private $templateList;
+    /** @var string */
+    private $rootPath;
 
     /**
      * @param InputInterface  $input
@@ -31,13 +36,15 @@ class CommandHelper
      * @param TemplateHelper  $templateHelper
      * @param QuestionHelper  $questionHelper
      * @param Template[]      $templateList
+     * @param string          $rootPath
      */
     public function __construct(
         InputInterface $input,
         OutputInterface $output,
         TemplateHelper $templateHelper,
         QuestionHelper $questionHelper,
-        array $templateList
+        array $templateList,
+        $rootPath = '.'
     ) {
         $this->input = $input;
         $this->output = $output;
@@ -46,6 +53,9 @@ class CommandHelper
         $this->templateHelper = $templateHelper;
 
         $this->templateList = $templateList;
+        $this->rootPath = realpath($rootPath);
+
+        $this->fileSystem = new Filesystem();
     }
 
     /**
@@ -105,6 +115,18 @@ class CommandHelper
         return $currentType;
     }
 
+
+
+    /**
+     * @param Template $template
+     *
+     * @return string
+     */
+    public function resolveTargetPath(Template $template)
+    {
+        return sprintf('%s/%s', $this->rootPath, $template->getTarget());
+    }
+
     /**
      * @param Question $question
      *
@@ -113,6 +135,16 @@ class CommandHelper
     public function ask(Question $question)
     {
         return $this->questionHelper->ask($this->input, $this->output, $question);
+    }
+
+    /**
+     * @param Template $emplate
+     *
+     * @return bool
+     */
+    public function targetExist(Template $template)
+    {
+        return $this->fileSystem->exists($this->resolveTargetPath($template));
     }
 
     /**
