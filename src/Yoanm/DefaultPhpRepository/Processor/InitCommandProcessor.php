@@ -70,28 +70,27 @@ class InitCommandProcessor extends CommandProcessor
             $this->displayHeader($template, $currentType);
 
             $currentType = $this->resolveCurrentType($template);
+            $this->displayTemplate($template);
             $fileExist = false;
             if ($template instanceof FolderTemplate) {
-                $this->displayTemplate($template);
+                $process = false;
                 foreach ($template->getFileList() as $subTemplate) {
-                    $targetPath = sprintf('%s/%s', $this->rootPath, $subTemplate->getTarget());
-                    list($fileExist, $process) = $this->validateDump($targetPath);
+                    list($fileExist, $process) = $this->validateDump($subTemplate);
+
                     if (false === $process) {
                         break;
                     }
                 }
                 if (true === $process) {
                     foreach ($template->getFileList() as $subTemplate) {
-                        $targetPath = sprintf('%s/%s', $this->rootPath, $subTemplate->getTarget());
-                        $this->dumpTemplate($subTemplate, $targetPath);
+                        $this->dumpTemplate($subTemplate);
                     }
                 }
             } else {
-                $this->displayTemplate($template);
-                $targetPath = sprintf('%s/%s', $this->rootPath, $template->getTarget());
-                list($fileExist, $process) = $this->validateDump($targetPath);
+                list($fileExist, $process) = $this->validateDump($template);
+
                 if (true === $process) {
-                    $this->dumpTemplate($template, $targetPath);
+                    $this->dumpTemplate($template);
                 }
             }
             if (false === $fileExist) {
@@ -114,22 +113,22 @@ class InitCommandProcessor extends CommandProcessor
      * @param Template $template
      * @param string           $path
      */
-    protected function dumpTemplate(Template $template, $path)
+    protected function dumpTemplate(Template $template)
     {
         $templateId = $template->getSource();
         if (null !== $template->getNamespace()) {
             $templateId = sprintf('@%s/%s', $template->getNamespace(), $template->getSource());
         }
-        $this->templateHelper->dumpTemplate($templateId, $path);
+        $this->templateHelper->dumpTemplate($templateId, $this->resolveTargetPath($template));
     }
 
     /**
      * @param string $target
      * @return array
      */
-    protected function validateDump($target)
+    protected function validateDump(Template $template)
     {
-        $fileExist = $this->fileSystem->exists($target);
+        $fileExist = $this->fileSystem->exists($this->resolveTargetPath($template));
         $process = true;
         if ($fileExist) {
             if (false === $this->forceOverride && true === $this->skipExisting) {
@@ -154,5 +153,15 @@ class InitCommandProcessor extends CommandProcessor
     protected function doOverwrite()
     {
         return $this->ask(new ConfirmationQuestion('<question>Overwrite ? [n]</question>', false));
+    }
+
+    /**
+     * @param Template $template
+     *
+     * @return string
+     */
+    protected function resolveTargetPath(Template $template)
+    {
+        return sprintf('%s/%s', $this->rootPath, $template->getTarget());
     }
 }
