@@ -26,7 +26,7 @@ class TemplateListFactory
         (new NamespaceResolver())->resolve($templateList, $repositoryType, $repositorySubType);
 
         // Reorder final list
-        $orderedList =  [
+        $orderedList = [
             'git.readme',
             'git.license',
             'git.contributing',
