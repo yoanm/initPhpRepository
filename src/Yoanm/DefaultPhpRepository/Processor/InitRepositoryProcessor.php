@@ -53,7 +53,6 @@ class InitRepositoryProcessor
             $this->displayTemplate($template);
 
             if ($template instanceof FolderTemplate) {
-
                 $targetExist = false;
                 $process = false;
 
@@ -92,8 +91,7 @@ class InitRepositoryProcessor
     }
 
     /**
-     * @param Template $template
-     * @param bool     $targetExist
+     * @param bool $targetExist
      *
      * @return bool
      */
@@ -105,16 +103,13 @@ class InitRepositoryProcessor
                 $this->helper->display('<comment>Skipped !</comment>');
                 $process = false;
             } else {
-                $process = false;
                 if (true === $this->forceOverride) {
                     $process = true;
                     $this->helper->display('<comment>Overriden !</comment>');
-                } elseif (
-                    $this->helper->ask(
+                } else {
+                    $process = $this->helper->ask(
                         new ConfirmationQuestion('<question>Overwrite ? [n]</question>', false)
-                    )
-                ) {
-                    $process = true;
+                    );
                 }
             }
         }

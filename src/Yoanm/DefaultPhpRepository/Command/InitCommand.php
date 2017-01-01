@@ -82,12 +82,12 @@ class InitCommand extends Command
             $output->writeln(sprintf('<error>Unexpected type "%s" !</error>', $repositoryType));
             $output->writeln(sprintf(
                 '<info>Allowed type : %s </info>',
-                implode(' / ', array_map(function ($availableMode) {
-                            return sprintf('<comment>%s</comment>', $availableMode);
-                        },
-                        $availableTypeList
-                    )
-                )
+                implode(' / ', array_map(
+                    function ($availableMode) {
+                        return sprintf('<comment>%s</comment>', $availableMode);
+                    },
+                    $availableTypeList
+                ))
             ));
 
             return false;

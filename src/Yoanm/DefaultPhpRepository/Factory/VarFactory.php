@@ -49,7 +49,11 @@ class VarFactory
             throw new \Exception("Git username cannot be empty ! Use git config user.name 'NAME' to define it");
         }
 
-        preg_match('#github\.com(?:(?:(.*)\/)|(?::(.*)\.git))$#m', shell_exec('git remote -v show -n origin'), $matches);
+        preg_match(
+            '#github\.com(?:(?:(.*)\/)|(?::(.*)\.git))$#m',
+            shell_exec('git remote -v show -n origin'),
+            $matches
+        );
         $gitId = trim($matches[1]);
         $gitId = '' === $gitId
             ? trim($matches[2])
@@ -93,5 +97,4 @@ class VarFactory
             )
         );
     }
-
 }
