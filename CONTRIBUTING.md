@@ -3,7 +3,7 @@
 ## Getting Started
  * Fork, then clone the repo:
 ```bash
-git clone git@github.com:your-username/defaultPhpRepository.git
+git clone git@github.com:your-username/initPhpRepository.git
 ````
 
  * Make sure everything goes well:
@@ -23,7 +23,7 @@ composer test
 composer coverage
 ```
 
- * Push to your fork and [submit a pull request](https://github.com/yoanm/defaultPhpRepository/compare/).
+ * Push to your fork and [submit a pull request](https://github.com/yoanm/initPhpRepository/compare/).
  * Wait for feedback or merge.
 
   Some stuff that will increase your pull request's acceptance:

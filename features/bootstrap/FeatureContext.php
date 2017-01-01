@@ -1,5 +1,5 @@
 <?php
-namespace Functional\Yoanm\DefaultPhpRepository\BehatContext;
+namespace Functional\Yoanm\InitPhpRepository\BehatContext;
 
 use Behat\Behat\Context\Context;
 

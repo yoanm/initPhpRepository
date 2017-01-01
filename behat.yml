@@ -2,4 +2,4 @@ default:
   suites:
     default:
       contexts:
-        - Functional\Yoanm\DefaultPhpRepository\BehatContext\FeatureContext: ~
+        - Functional\Yoanm\InitPhpRepository\BehatContext\FeatureContext: ~
