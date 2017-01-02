@@ -52,28 +52,6 @@ class TemplateListFactory
     }
 
     /**
-     * @param string $id
-     * @param string $templateName
-     *
-     * @return Template
-     */
-    protected function createTemplate($id, $templateName)
-    {
-        return new Template($id, $templateName, $this->getOutputFilePath($templateName));
-    }
-
-
-    /**
-     * @param string $templateName
-     *
-     * @return string
-     */
-    protected function getOutputFilePath($templateName)
-    {
-        return str_replace('.twig', '', $templateName);
-    }
-
-    /**
      * @param $repositoryType
      *
      * @return array
@@ -124,5 +102,27 @@ class TemplateListFactory
             }
         }
         return $templateList;
+    }
+
+    /**
+     * @param string $id
+     * @param string $templateName
+     *
+     * @return Template
+     */
+    protected function createTemplate($id, $templateName)
+    {
+        return new Template($id, $templateName, $this->getOutputFilePath($templateName));
+    }
+
+
+    /**
+     * @param string $templateName
+     *
+     * @return string
+     */
+    protected function getOutputFilePath($templateName)
+    {
+        return str_replace('.twig', '', $templateName);
     }
 }

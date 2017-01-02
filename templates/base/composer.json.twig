@@ -1,7 +1,7 @@
 {% set escapedNamespace = autoload.namespace|replace({'\\':'\\\\'}) %}
 {
   "name": "{{ composer.package.name }}",
-  "type": "{{ composer.config.type }}",
+{% block type %}{% endblock type %}
   "license": "MIT",
   "version": "0.1.0",
 {% block description %}{% endblock description %}

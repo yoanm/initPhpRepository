@@ -3,31 +3,28 @@ namespace Yoanm\InitPhpRepository\Factory;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Yoanm\InitPhpRepository\Command\RepositoryType;
 
 /**
- * Class VarFactory
+ * Class TemplateVarFactory
  */
-class VarFactory
+class TemplateVarFactory
 {
     /**
-     * @param bool $isProject
      * @return array
+     *
      * @throws \Exception
      */
-    public function create($isProject = true)
+    public function create()
     {
         $bag = new ParameterBag();
 
-        // - Git variables
+        // - Git
         $this->setGitVariables($bag);
-
-        $bag->set('id', str_replace('_', '-', ContainerBuilder::underscore($bag->get('github.id'))));
-        $bag->set('name', ucwords(str_replace('_', ' ', ContainerBuilder::underscore($bag->get('github.id')))));
-
-        // - Composer variables
-        $this->setComposerVariables($bag, $isProject);
-        // - Autoloading
+        // - Global
+        $this->setGlobalVariables($bag);
+        // - Composer
+        $this->setComposerVariables($bag);
+        // - Autoload
         $this->setAutoloadVariables($bag);
 
         $bag->resolve();
@@ -75,12 +72,19 @@ class VarFactory
 
     /**
      * @param ParameterBag $bag
-     * @param bool         $isProject
      */
-    protected function setComposerVariables(ParameterBag $bag, $isProject)
+    protected function setGlobalVariables(ParameterBag $bag)
+    {
+        $bag->set('id', str_replace('_', '-', ContainerBuilder::underscore($bag->get('github.id'))));
+        $bag->set('name', ucwords(str_replace('_', ' ', ContainerBuilder::underscore($bag->get('github.id')))));
+    }
+
+    /**
+     * @param ParameterBag $bag
+     */
+    protected function setComposerVariables(ParameterBag $bag)
     {
         $bag->set('composer.package.name', str_replace('_', '-', ContainerBuilder::underscore($bag->get('git.id'))));
-        $bag->set('composer.config.type', true === $isProject ? RepositoryType::PROJECT : RepositoryType::LIBRARY);
     }
 
     /**
