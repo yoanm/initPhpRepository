@@ -15,9 +15,12 @@ build_failure_conditions:
 build:
     cache:
         directories:
-            - vendor
             - ~/.composer
+            - vendor
+
     dependencies:
+        before:
+            - composer global require hirak/prestissimo
         override:
             - composer build-ci
 
@@ -26,6 +29,7 @@ build:
         postgresql: false
         elasticsearch: false
         redis: false
+
     tests:
         override:
             - composer cs

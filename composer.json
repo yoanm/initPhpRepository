@@ -20,8 +20,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Technical\\Integration\\Yoanm\\InitPhpRepository\\": "tests/Technical/Integration",
       "Technical\\Unit\\Yoanm\\InitPhpRepository\\": "tests/Technical/Unit",
+      "Technical\\Integration\\Yoanm\\InitPhpRepository\\": "tests/Technical/Integration",
       "Functional\\Yoanm\\InitPhpRepository\\": "tests/Functional",
       "Functional\\Yoanm\\InitPhpRepository\\BehatContext\\": "features/bootstrap"
     }
@@ -66,7 +66,7 @@
       "./vendor/bin/phpcs"
     ],
     "coverage": [
-      "./vendor/bin/phpunit --coverage-html coverage"
+      "./vendor/bin/phpunit --coverage-html build/coverage"
     ],
     "coverage-clover": [
       "./vendor/bin/phpunit --coverage-clover build/coverage/clover.xml"

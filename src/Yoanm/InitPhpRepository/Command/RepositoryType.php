@@ -1,5 +1,5 @@
 <?php
-namespace Yoanm\DefaultPhpRepository\Command;
+namespace Yoanm\InitPhpRepository\Command;
 
 /**
  * Class RepositoryType

@@ -1,4 +1,3 @@
-{% block body %}
 language: php
 
 php:
@@ -12,18 +11,19 @@ sudo: false
 matrix:
   fast_finish: true
 
-{% block install %}
+{% block before_install %}
+before_install:
+  - composer global require hirak/prestissimo
+{% endblock before_install %}
+
 install:
   - composer build-ci
-{% endblock install %}
 
 script:
   - composer test
 
 cache:
-  files:
-    - composer.lock
+{% block cache_directory %}
   directories:
     - $HOME/.composer
-    - vendor
-{% endblock body %}
+{% endblock cache_directory %}

@@ -1,5 +1,9 @@
 {% extends 'composer.json.twig' %}
 
+{% block type %}
+  "type": "library",
+{% endblock type %}
+
 {% block description %}
   "description": "XXX",
 {% endblock description %}
@@ -19,3 +23,11 @@
     "YYY/ZZZ": "Description"
   },
 {% endblock suggest %}
+
+{#
+As composer.lock is ignored,
+remove it silently on ci script to have the same env than any other ci system
+#}
+{% block before_scripts_ci %}
+      "rm composer.lock 2>/dev/null | true",
+{% endblock before_scripts_ci %}
