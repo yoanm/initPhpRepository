@@ -14,10 +14,14 @@ build_failure_conditions:
     - 'patches.label("Spacing").exists'            # No spacing patches allowed
 build:
     cache:
+{% block cache_directories %}
         directories:
-            - vendor
             - ~/.composer
+{% endblock cache_directories %}
+
     dependencies:
+        before:
+            - composer global require hirak/prestissimo
         override:
             - composer build-ci
 
@@ -26,6 +30,8 @@ build:
         postgresql: false
         elasticsearch: false
         redis: false
+{% block env_var %}{% endblock env_var %}
+
     tests:
         override:
 {% block test %}
@@ -66,7 +72,7 @@ tools:
 
 filter:
     paths:
-        - src/*
+        - {{ autoload.folders.source }}/*
 
 coding_style:
     php:

@@ -1,10 +1,10 @@
 <?php
-namespace Yoanm\DefaultPhpRepository\Processor;
+namespace Yoanm\InitPhpRepository\Processor;
 
-use Yoanm\DefaultPhpRepository\Helper\CommandHelper;
-use Yoanm\DefaultPhpRepository\Model\FolderTemplate;
-use Yoanm\DefaultPhpRepository\Model\Template;
-use Yoanm\DefaultPhpRepository\Resolver\NamespaceResolver;
+use Yoanm\InitPhpRepository\Helper\CommandHelper;
+use Yoanm\InitPhpRepository\Model\FolderTemplate;
+use Yoanm\InitPhpRepository\Model\Template;
+use Yoanm\InitPhpRepository\Resolver\NamespaceResolver;
 
 /**
  * Class ListTemplatesProcessor

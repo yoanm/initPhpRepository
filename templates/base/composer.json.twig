@@ -1,7 +1,6 @@
-{% set escapedNamespace = autoload.namespace|replace({'\\':'\\\\'}) %}
 {
   "name": "{{ composer.package.name }}",
-  "type": "{{ composer.config.type }}",
+{% block type %}{% endblock type %}
   "license": "MIT",
   "version": "0.1.0",
 {% block description %}{% endblock description %}
@@ -20,15 +19,15 @@
   },
   "autoload": {
     "psr-0": {
-      "{{ escapedNamespace }}": "src/"
+      "{{ autoload.namespace.base|replace({'\\':'\\\\'}) }}": "{{ autoload.folders.source }}/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Technical\\Integration\\{{ escapedNamespace }}\\": "tests/Technical/Integration",
-      "Technical\\Unit\\{{ escapedNamespace }}\\": "tests/Technical/Unit",
-      "Functional\\{{ escapedNamespace }}\\": "tests/Functional",
-      "Functional\\{{ escapedNamespace }}\\BehatContext\\": "features/bootstrap"
+      "{{ autoload.namespace.tests.technical.unit|replace({'\\':'\\\\'}) }}\\": "{{ autoload.folders.test.technical.unit }}",
+      "{{ autoload.namespace.tests.technical.integration|replace({'\\':'\\\\'}) }}\\": "{{ autoload.folders.test.technical.integration }}",
+      "{{ autoload.namespace.tests.functional.base|replace({'\\':'\\\\'}) }}\\": "{{ autoload.folders.test.functional.phpunit }}",
+      "{{ autoload.namespace.tests.functional.behat_context|replace({'\\':'\\\\'}) }}\\": "{{ autoload.folders.test.functional.behat_context }}"
     }
   },
   "require": {
@@ -48,6 +47,7 @@
       "@composer install --prefer-dist --ansi --no-suggest --no-interaction"
     ],
     "ci": [
+{% block before_scripts_ci %}{% endblock before_scripts_ci %}
       "@build-ci",
       "@cs",
       "@test"
@@ -70,7 +70,7 @@
       "./vendor/bin/phpcs"
     ],
     "coverage": [
-      "./vendor/bin/phpunit --coverage-html coverage"
+      "./vendor/bin/phpunit --coverage-html build/coverage"
     ],
     "coverage-clover": [
       "./vendor/bin/phpunit --coverage-clover build/coverage/clover.xml"

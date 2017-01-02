@@ -1,17 +1,17 @@
 <?php
-namespace Yoanm\DefaultPhpRepository\Command;
+namespace Yoanm\InitPhpRepository\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Yoanm\DefaultPhpRepository\Factory\TemplateListFactory;
-use Yoanm\DefaultPhpRepository\Factory\VarFactory;
-use Yoanm\DefaultPhpRepository\Helper\CommandHelper;
-use Yoanm\DefaultPhpRepository\Helper\TemplateHelper;
-use Yoanm\DefaultPhpRepository\Processor\InitRepositoryProcessor;
-use Yoanm\DefaultPhpRepository\Processor\ListTemplatesProcessor;
+use Yoanm\InitPhpRepository\Factory\TemplateListFactory;
+use Yoanm\InitPhpRepository\Factory\TemplateVarFactory;
+use Yoanm\InitPhpRepository\Helper\CommandHelper;
+use Yoanm\InitPhpRepository\Helper\TemplateHelper;
+use Yoanm\InitPhpRepository\Processor\InitRepositoryProcessor;
+use Yoanm\InitPhpRepository\Processor\ListTemplatesProcessor;
 
 class InitCommand extends Command
 {
@@ -119,7 +119,7 @@ class InitCommand extends Command
             $output,
             new TemplateHelper(
                 new \Twig_Environment(null, ['autoescape' => false]),
-                (new VarFactory())->create(RepositoryType::PROJECT === $repositoryType)
+                (new TemplateVarFactory())->create()
             ),
             $this->getHelper('question'),
             (new TemplateListFactory())->create($repositoryType, $repositorySubType)

@@ -57,5 +57,8 @@ PATH_TO_BIN/initPhpRepository --ask-before-override
 PATH_TO_BIN/initPhpRepository -h
 ```
 
+# Tests
+This repository follow a [custom test strategy](https://gist.github.com/yoanm/3944890d0adda5fc7e0c306a1870727d#file-tests-md)
+
 # Contributing
 See [contributing note](./CONTRIBUTING.md)

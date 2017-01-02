@@ -1,9 +1,9 @@
 <?php
-namespace Yoanm\DefaultPhpRepository\Resolver;
+namespace Yoanm\InitPhpRepository\Resolver;
 
-use Yoanm\DefaultPhpRepository\Command\RepositorySubType;
-use Yoanm\DefaultPhpRepository\Command\RepositoryType;
-use Yoanm\DefaultPhpRepository\Model\Template;
+use Yoanm\InitPhpRepository\Command\RepositorySubType;
+use Yoanm\InitPhpRepository\Command\RepositoryType;
+use Yoanm\InitPhpRepository\Model\Template;
 
 /**
  * Class NamespaceResolver
@@ -24,12 +24,10 @@ class NamespaceResolver
      */
     public function resolve(array $templateList, $repositoryType, $repositorySubType)
     {
-        $namespace = RepositoryType::LIBRARY === $repositoryType
-            ? self::LIBRARY_NAMESPACE
-            : self::PROJECT_NAMESPACE
-        ;
-        // Override base namespace for specific files
+        // Update only templates that are not in base namespace
         if (RepositoryType::LIBRARY === $repositoryType) {
+            $namespace = self::LIBRARY_NAMESPACE;
+
             $this->setNamespace($templateList, 'composer.config', $namespace);
             $this->setNamespace($templateList, 'git.gitignore', $namespace);
             $this->setNamespace($templateList, 'git.readme', $namespace);
@@ -37,10 +35,15 @@ class NamespaceResolver
             // Override with sub type
             if (RepositorySubType::SYMFONY === $repositorySubType) {
                 $subNamespace = self::SYMFONY_LIBRARY_NAMESPACE;
+
                 $this->setNamespace($templateList, 'ci.travis', $subNamespace);
                 $this->setNamespace($templateList, 'git.readme', $subNamespace);
+                $this->setNamespace($templateList, 'ci.scrutinizer', $subNamespace);
             }
         } else {
+            $namespace = self::PROJECT_NAMESPACE;
+
+            $this->setNamespace($templateList, 'composer.config', $namespace);
             $this->setNamespace($templateList, 'ci.scrutinizer', $namespace);
         }
     }
