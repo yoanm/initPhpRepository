@@ -24,10 +24,10 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "{{ autoload.namespace.tests.technical.unit|replace({'\\':'\\\\'} }}\\": "{{ autoload.folders.test.technical.unit }}",
-      "{{ autoload.namespace.tests.technical.integration|replace({'\\':'\\\\'} }}\\": "{{ autoload.folders.test.technical.integration }}",
-      "{{ autoload.namespace.tests.functional.base|replace({'\\':'\\\\'} }}\\": "{{ autoload.folders.test.functional.behat_context }}",
-      "{{ autoload.namespace.tests.functional.behat_context|replace({'\\':'\\\\'} }}\\": "{{ autoload.folders.test.functional.behat_context }}"
+      "{{ autoload.namespace.tests.technical.unit|replace({'\\':'\\\\'}) }}\\": "{{ autoload.folders.test.technical.unit }}",
+      "{{ autoload.namespace.tests.technical.integration|replace({'\\':'\\\\'}) }}\\": "{{ autoload.folders.test.technical.integration }}",
+      "{{ autoload.namespace.tests.functional.base|replace({'\\':'\\\\'}) }}\\": "{{ autoload.folders.test.functional.phpunit }}",
+      "{{ autoload.namespace.tests.functional.behat_context|replace({'\\':'\\\\'}) }}\\": "{{ autoload.folders.test.functional.behat_context }}"
     }
   },
   "require": {
