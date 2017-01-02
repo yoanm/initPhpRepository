@@ -1,6 +1,6 @@
 # {{ github.id }}
 
-{% block badge %}
+{% block badges %}
 {% block scrutinizer_badge %}
 [![Scrutinizer Build Status](https://img.shields.io/scrutinizer/build/g/{{ git.id }}.svg?label=Scrutinizer)](https://scrutinizer-ci.com/g/{{ git.id }}/?branch=master) [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/{{ git.id }}.svg?label=Code%20quality)](https://scrutinizer-ci.com/g/{{ git.id }}/?branch=master) [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/{{ git.id }}.svg?label=Coverage)](https://scrutinizer-ci.com/g/{{ git.id }}/?branch=master)
 {% endblock scrutinizer_badge %}
@@ -9,7 +9,7 @@
 [![Latest Stable Version](https://img.shields.io/packagist/v/{{ composer.package.name }}.svg)](https://packagist.org/packages/{{ composer.package.name }})
 {% endblock composer_badge %}
 
-{% endblock badge %}
+{% endblock badges %}
 # Install
 ```bash
 {% block install_steps %}

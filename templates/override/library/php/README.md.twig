@@ -1,13 +1,13 @@
 {% extends 'README.md.twig' %}
 
-{% block badge %}
+{% block badges %}
 {{ block('scrutinizer_badge') }}
 {% block travis_badge %}
 [![Travis Build Status](https://img.shields.io/travis/{{ git.id }}/master.svg?label=travis)](https://travis-ci.org/{{ git.id }}) [![PHP Versions](https://img.shields.io/badge/php-5.5%20%2F%205.6%20%2F%207.0-8892BF.svg)](https://php.net/)
 {% endblock travis_badge %}
 
 {{ block('composer_badge') }}
-{% endblock badge %}
+{% endblock badges %}
 
 {% block install_steps %}
 composer require {{ composer.package.name }}
