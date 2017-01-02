@@ -48,6 +48,7 @@
       "@composer install --prefer-dist --ansi --no-suggest --no-interaction"
     ],
     "ci": [
+{% block before_scripts_ci %}{% endblock before_scripts_ci %}
       "@build-ci",
       "@cs",
       "@test"
