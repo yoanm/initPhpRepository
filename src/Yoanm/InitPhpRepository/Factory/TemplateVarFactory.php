@@ -92,13 +92,43 @@ class TemplateVarFactory
      */
     protected function setAutoloadVariables(ParameterBag $bag)
     {
+        // Namespaces
         $bag->set(
-            'autoload.namespace',
+            'autoload.namespace.base',
             sprintf(
                 '%s\\%s',
                 ContainerBuilder::camelize($bag->get('github.vendor')),
                 ContainerBuilder::camelize($bag->get('github.id'))
             )
         );
+        $bag->set('autoload.namespace.tests.technical.unit', 'Technical\Unit\%autoload.namespace.base%');
+        $bag->set('autoload.namespace.tests.technical.integration', 'Technical\Integration\%autoload.namespace.base%');
+        $bag->set('autoload.namespace.tests.functional.base', 'Functional\%autoload.namespace.base%');
+        $bag->set(
+            'autoload.namespace.tests.functional.behat_context',
+            '%autoload.namespace.tests.functional.base%\BehatContext'
+        );
+        // Folders
+        $bag->set('autoload.folders.source', 'src');
+        $bag->set(
+            'autoload.folders.source_psr0',
+            sprintf(
+                '%s/%s/%s',
+                '%autoload.folders.source%',
+                ContainerBuilder::camelize($bag->get('github.vendor')),
+                ContainerBuilder::camelize($bag->get('github.id'))
+            )
+        );
+
+        $bag->set('autoload.folders.test.phpunit', 'tests');
+        $bag->set('autoload.folders.test.behat', 'features');
+
+        $bag->set('autoload.folders.test.technical.base', '%autoload.folders.test.phpunit%/Technical');
+
+        $bag->set('autoload.folders.test.technical.unit', '%autoload.folders.test.technical.base%/Unit');
+        $bag->set('autoload.folders.test.technical.integration', '%autoload.folders.test.technical.base%/Integration');
+
+        $bag->set('autoload.folders.test.functional.phpunit', '%autoload.folders.test.phpunit%/Functional');
+        $bag->set('autoload.folders.test.functional.behat_context', '%autoload.folders.test.behat%/bootstrap');
     }
 }
