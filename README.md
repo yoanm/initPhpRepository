@@ -10,16 +10,16 @@ Command to initialize a php repository (Project / Git / Contribution / Composer 
 
 
 
-# Install
+## Install
 ```bash
 git clone git@github.com:yoanm/initPhpRepository.git
 cd initPhpRepository
 composer build
 ```
 
-# How to
+## How to
 
-## Initiliaze
+### Initiliaze
 Go to repository folder an type : 
  * Library
 ```bash
@@ -31,37 +31,37 @@ Go to project repository folder an type :
 PATH_TO_BIN/initPhpRepository [project]
 ```
 
-## Symfony
+### Symfony
 In case the **library** is used in symfony invironment, type the following : 
 ```bash
 PATH_TO_BIN/initPhpRepository library --symfony
 ```
 
-## Run specific templates
+### Run specific templates
 ```bash
 PATH_TO_BIN/initPhpRepository --id ID_1 --id ID_2
 ```
 
-## List
+### List
 ```bash
 PATH_TO_BIN/initPhpRepository -l
 ```
 
-## Existing file override
-### Override all
+### Existing file override
+#### Override all
 ```bash
 PATH_TO_BIN/initPhpRepository -f
 ```
 
-### Ask before overriding
+#### Ask before overriding
 ```bash
 PATH_TO_BIN/initPhpRepository --ask-before-override
 ```
 
-## Help
+### Help
 ```bash
 PATH_TO_BIN/initPhpRepository -h
 ```
 
-# Contributing
+## Contributing
 See [contributing note](./CONTRIBUTING.md)
