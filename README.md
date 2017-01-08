@@ -6,7 +6,13 @@
 
 Command to initialize a php repository (Project / Git / Contribution / Composer / PhpCs / PhpUnit / Behat / Scrutinizer / Travis files and folders)
 
-> :information_source: **[Yoanm Tests strategy](https://github.com/yoanm/Readme/blob/master/TESTS_STRATEGY.md) compliant**
+> :information_source: **Yoanm strategies compliant**
+
+>  * [**Folders**](https://github.com/yoanm/Readme/blob/master/strategy/folders/README.md)
+
+>  * [**Autoloading**](https://github.com/yoanm/Readme/blob/master/strategy/autoloading/README.md)
+
+>  * [**Tests**](https://github.com/yoanm/Readme/blob/master/strategy/tests/README.md)
 
 
 
