@@ -4,6 +4,12 @@
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/yoanm/init-php-repository.svg)](https://packagist.org/packages/yoanm/init-php-repository)
 
+Command to initialize a php repository (Project / Git / Contribution / Composer / PhpCs / PhpUnit / Behat / Scrutinizer / Travis files and folders)
+
+> :information_source: **[Yoanm Tests strategy](https://github.com/yoanm/Readme/blob/master/TESTS_STRATEGY.md) compliant**
+
+
+
 # Install
 ```bash
 git clone git@github.com:yoanm/initPhpRepository.git
